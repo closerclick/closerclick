@@ -15,6 +15,7 @@ Landing page para el ecosistema **Closer Click**: lista de las apps que usan el 
 - [Closer Click Chat](https://seyacat.github.io/simple-websocket-chat/)
 - [QRShare](https://seyacat.github.io/qrshare/)
 - [Closer Click Chess](https://seyacat.github.io/simple-websocket-chess/)
+- [Contador Ecuavóley](https://seyacat.github.io/ecuavoley-contador/)
 
 ## Build
 
