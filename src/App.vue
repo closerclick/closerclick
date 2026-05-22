@@ -130,6 +130,12 @@ onUnmounted(() => {
           Un ecosistema de aplicaciones que corren del lado del cliente,
           conectándose a través de un proxy descentralizado para gestionar y compartir contenido
         </p>
+        <p class="hero-manifesto">
+          <strong>Tu información, en tu servidor, bajo tus reglas.</strong>
+          Lo que es tuyo, se queda contigo: tú decides <em>qué</em> compartes,
+          <em>cómo</em> lo compartes y <em>cuándo</em> lo compartes. Sin intermediarios,
+          sin nubes ajenas, sin letra pequeña.
+        </p>
         <button @click="scrollToSection('aplicaciones')" class="cta-button">
           Descubre Más
         </button>
@@ -327,7 +333,25 @@ onUnmounted(() => {
 
     <footer class="footer">
       <div class="footer-content">
-        <p>&copy; 2024 Team Closer Click. Todos los derechos reservados.</p>
+        <h3 class="footer-philosophy-title">La filosofía Closer Click</h3>
+        <div class="footer-pillars">
+          <div class="footer-pillar">
+            <h4>Qué comparto</h4>
+            <p>Solo la información que decido exponer, nada más.</p>
+          </div>
+          <div class="footer-pillar">
+            <h4>Cómo lo comparto</h4>
+            <p>Con el formato, el acceso y las condiciones que yo defino.</p>
+          </div>
+          <div class="footer-pillar">
+            <h4>Cuándo lo comparto</h4>
+            <p>En el momento que quiero, y lo retiro cuando quiero.</p>
+          </div>
+        </div>
+        <p class="footer-tagline">
+          Todo sobre infraestructura que tú controlas. Eso es autohosteo. Eso es soberanía digital.
+        </p>
+        <p class="footer-copy">&copy; 2024 Team Closer Click. Todos los derechos reservados.</p>
       </div>
     </footer>
   </div>
@@ -434,7 +458,19 @@ onUnmounted(() => {
 .hero-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.3); }
 .hero-content { text-align: center; color: white; z-index: 2; max-width: 800px; padding: 0 2rem; }
 .hero-title { font-size: 4rem; font-weight: 700; margin-bottom: 1.5rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); }
-.hero-subtitle { font-size: 1.4rem; line-height: 1.6; margin-bottom: 2.5rem; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); }
+.hero-subtitle { font-size: 1.4rem; line-height: 1.6; margin-bottom: 1.5rem; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); }
+.hero-manifesto {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  opacity: 0.95;
+}
+.hero-manifesto strong { display: block; color: #3498db; font-size: 1.2rem; margin-bottom: 0.5rem; }
+.hero-manifesto em { font-style: normal; font-weight: 600; color: #fff; }
 .cta-button {
   background: #3498db; color: white; border: none; padding: 1rem 2.5rem; font-size: 1.1rem; font-weight: 600;
   border-radius: 50px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
@@ -538,8 +574,15 @@ onUnmounted(() => {
 .api-item { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2); }
 .api-item h3 { color: #e74c3c; margin-bottom: 1rem; font-size: 1.3rem; }
 
-.footer { background: #2c3e50; color: white; text-align: center; padding: 2rem; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 5%, #000 100%); mask-image: linear-gradient(to bottom, transparent 0%, #000 5%, #000 100%); }
-.footer-content { max-width: 1200px; margin: 0 auto; }
+.footer { background: #2c3e50; color: white; text-align: center; padding: 3rem 2rem 2rem; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 5%, #000 100%); mask-image: linear-gradient(to bottom, transparent 0%, #000 5%, #000 100%); }
+.footer-content { max-width: 1000px; margin: 0 auto; }
+.footer-philosophy-title { font-size: 1.6rem; color: #3498db; margin-bottom: 2rem; }
+.footer-pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+.footer-pillar { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; padding: 1.5rem; }
+.footer-pillar h4 { color: #2ecc71; font-size: 1.1rem; margin-bottom: 0.6rem; }
+.footer-pillar p { line-height: 1.55; opacity: 0.9; }
+.footer-tagline { font-size: 1.05rem; line-height: 1.7; max-width: 640px; margin: 0 auto 2rem; opacity: 0.95; }
+.footer-copy { font-size: 0.9rem; opacity: 0.7; }
 
 @media (max-width: 768px) {
   .hero-title { font-size: 2.5rem; }
