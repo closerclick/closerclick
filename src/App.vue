@@ -157,6 +157,22 @@ onUnmounted(() => {
         </p>
         <div class="apps-grid">
           <div class="app-card">
+            <h3>Pronóstico Mundialista</h3>
+            <p>Arma tu pronóstico del Mundial 2026 (48 selecciones) en tres modos (simple, gana/pierde o con marcador), compite con tus amigos y lleva tu tabla de aciertos. Se codifica completo en una cadena corta, se firma con tu identidad ECDSA del vault <code>id.closer.click</code> y se comparte por QR.</p>
+            <a
+              href="https://mundial.closer.click/"
+              target="_blank"
+              rel="noopener"
+              class="app-button"
+            >Abrir aplicación</a>
+            <a
+              href="https://github.com/seyacat/pronostico-mundialista"
+              target="_blank"
+              rel="noopener"
+              class="app-repo"
+            >github.com/seyacat/pronostico-mundialista</a>
+          </div>
+          <div class="app-card">
             <h3>Closer Click Chat</h3>
             <p>Chat en tiempo real con salas públicas, descubrimiento de canales y mensajería P2P por WebRTC con caída automática al proxy WebSocket.</p>
             <a
