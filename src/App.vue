@@ -176,7 +176,7 @@ onUnmounted(() => {
             <h3>Closer Click Chat</h3>
             <p>Chat en tiempo real con salas públicas, descubrimiento de canales y mensajería P2P por WebRTC con caída automática al proxy WebSocket.</p>
             <a
-              href="https://seyacat.github.io/simple-websocket-chat/"
+              href="https://chat.closer.click/"
               target="_blank"
               rel="noopener"
               class="app-button"
@@ -192,7 +192,7 @@ onUnmounted(() => {
             <h3>Closer Click Messenger</h3>
             <p>Mensajería 1-a-1 con cifrado E2E (ECDH+AES-GCM), contactos compartidos entre apps del ecosistema, hilos persistidos en <code>store.closer.click</code> (mismos mensajes en web + extensión), mensajes offline (proxy retiene 24 h) y ranking integrado. PWA instalable + extensión Chrome MV3 reusando la PWA via iframe.</p>
             <a
-              href="https://seyacat.github.io/closerclick_messenger/"
+              href="https://messenger.closer.click/"
               target="_blank"
               rel="noopener"
               class="app-button"
@@ -208,7 +208,7 @@ onUnmounted(() => {
             <h3>QRShare</h3>
             <p>Transferencia de archivos P2P por WebRTC. El proxy solo descubre los peers; los archivos viajan directamente entre dispositivos. Comparte por QR.</p>
             <a
-              href="https://seyacat.github.io/qrshare/"
+              href="https://qrshare.closer.click/"
               target="_blank"
               rel="noopener"
               class="app-button"
@@ -224,7 +224,7 @@ onUnmounted(() => {
             <h3>Closer Click Chess</h3>
             <p>Ajedrez online multijugador con transporte P2P por WebRTC cuando es posible. Crea partidas públicas o privadas; el lobby se actualiza en tiempo real con los eventos del proxy.</p>
             <a
-              href="https://seyacat.github.io/simple-websocket-chess/"
+              href="https://chess.closer.click/"
               target="_blank"
               rel="noopener"
               class="app-button"
@@ -240,7 +240,7 @@ onUnmounted(() => {
             <h3>Contador Ecuavóley</h3>
             <p>Marcador para partidos de ecuavóley: dos paneles táctiles, indicador de saque, deshacer, cambio y reinicio. Gana el primero en llegar a 15.</p>
             <a
-              href="https://seyacat.github.io/ecuavoley-contador/"
+              href="https://ecuavoley.closer.click/"
               target="_blank"
               rel="noopener"
               class="app-button"
