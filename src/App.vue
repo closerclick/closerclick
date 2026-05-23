@@ -256,7 +256,7 @@ onUnmounted(() => {
             <h3>GridGame</h3>
             <p>Sandbox multijugador cooperativo en un grid. Mundo subjetivo: cada peer hostea lo que crea y carga el entorno alrededor a medida que se mueve. Ground procedural determinista, props/items/personajes/enemigos programables vía DSL, resolución de conflictos por reputación (web-of-trust de identity) y recencia. Loot no-exclusivo, summon de enemigos por turnos ponderados por reputación.</p>
             <a
-              href="https://seyacat.github.io/gridgame/"
+              href="https://gridgame.closer.click/"
               target="_blank"
               rel="noopener"
               class="app-button"
