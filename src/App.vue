@@ -272,7 +272,7 @@ onUnmounted(() => {
             <h3>Favicon Generator</h3>
             <p>Genera favicons e íconos <code>.ico</code> compatibles con Windows a partir de una imagen PNG/JPG, listos para tu sitio o PWA. Todo en el navegador, sin subir nada a un servidor.</p>
             <a
-              href="https://seyacat.github.io/favicon-generator/"
+              href="https://favicon.closer.click/"
               target="_blank"
               rel="noopener"
               class="app-button"
