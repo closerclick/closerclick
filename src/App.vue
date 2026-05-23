@@ -268,6 +268,22 @@ onUnmounted(() => {
               class="app-repo"
             >github.com/seyacat/gridgame</a>
           </div>
+          <div class="app-card">
+            <h3>Favicon Generator</h3>
+            <p>Genera favicons e íconos <code>.ico</code> compatibles con Windows a partir de una imagen PNG/JPG, listos para tu sitio o PWA. Todo en el navegador, sin subir nada a un servidor.</p>
+            <a
+              href="https://seyacat.github.io/favicon-generator/"
+              target="_blank"
+              rel="noopener"
+              class="app-button"
+            >Abrir aplicación</a>
+            <a
+              href="https://github.com/seyacat/favicon-generator"
+              target="_blank"
+              rel="noopener"
+              class="app-repo"
+            >github.com/seyacat/favicon-generator</a>
+          </div>
         </div>
 
         <button
