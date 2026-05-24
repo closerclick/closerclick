@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
@@ -11,9 +11,11 @@
       }
     </script>
     <title>Closer Click - Ecosistema de Aplicaciones</title>
+    <meta name="theme-color" content="#f1f1f1" />
     <meta name="description" content="Ecosistema de apps autohosteadas que comparten identidad, transporte y almacenamiento. Tu información, en tu servidor, bajo tus reglas." />
     <link rel="canonical" href="https://closer.click/" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
     <meta property="og:site_name" content="Closer Click" />
     <meta property="og:title" content="Closer Click — Ecosistema de Aplicaciones" />
     <meta property="og:description" content="Apps autohosteadas que comparten identidad, transporte y almacenamiento. Tu info, en tu servidor, bajo tus reglas." />
@@ -28,7 +30,20 @@
     <!-- Analítica cookieless autohosteada (GoatCounter); no cuenta en localhost/LAN. -->
     <script>window.goatcounter={path:function(p){return location.hostname+p}}</script>
     <script data-goatcounter="https://goat.closer.click/count" async src="https://goat.closer.click/count.js"></script>
-  </head>
+      <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Closer Click",
+      "url": "https://closer.click/",
+      "description": "Ecosistema de apps autohosteadas que comparten identidad, transporte y almacenamiento.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "publisher": { "@type": "Organization", "name": "Closer Click", "url": "https://closer.click/" }
+    }
+    </script>
+</head>
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
