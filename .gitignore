@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Artefactos generados por el Vue language server (vue-tsc / Volar)
+*.vue.js
+src/main.js
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
