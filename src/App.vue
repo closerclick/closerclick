@@ -224,10 +224,6 @@ const apiItems = computed(() =>
       ]
 )
 
-const toggleLocale = () => {
-  locale.value = locale.value === 'es' ? 'en' : 'es'
-}
-
 watch(
   locale,
   (l) => {
@@ -325,11 +321,18 @@ onUnmounted(() => {
         </div>
 
         <div class="nav-actions">
-          <button
-            @click="toggleLocale"
-            class="lang-btn"
-            :aria-label="t.langLabel"
-          >{{ t.langToggle }}</button>
+          <div class="lang-selector" role="group" :aria-label="t.langLabel">
+            <button
+              :class="{ on: locale === 'es' }"
+              @click="locale = 'es'"
+              aria-label="Español"
+            >ES</button>
+            <button
+              :class="{ on: locale === 'en' }"
+              @click="locale = 'en'"
+              aria-label="English"
+            >EN</button>
+          </div>
 
           <button
             v-if="!isStandalone"
@@ -494,19 +497,27 @@ onUnmounted(() => {
 .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: #3498db; transition: width 0.3s ease; }
 .nav-link:hover::after { width: 100%; }
 
-.lang-btn {
-  background: transparent;
-  color: #fff;
+.lang-selector {
+  display: inline-flex;
   border: 1px solid rgba(255, 255, 255, 0.4);
-  padding: 0.4rem 0.75rem;
-  font-size: 0.85rem;
-  font-weight: 600;
   border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  min-width: 2.5rem;
+  overflow: hidden;
 }
-.lang-btn:hover { background: rgba(255, 255, 255, 0.12); border-color: #fff; }
+.lang-selector button {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  border: none;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.lang-selector button:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+.lang-selector button.on {
+  background: #3498db;
+  color: #fff;
+}
 
 .install-btn {
   background: #3498db;
