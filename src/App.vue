@@ -336,8 +336,6 @@ onUnmounted(() => {
             @click="installApp"
             class="install-btn"
           >{{ t.nav.install }}</button>
-
-          <closer-click-support href="https://ko-fi.com/seyacat" :lang="locale"></closer-click-support>
         </div>
 
         <div class="nav-links desktop-links">
@@ -356,6 +354,12 @@ onUnmounted(() => {
           <span></span>
           <span></span>
         </button>
+
+        <closer-click-support
+          class="nav-support"
+          href="https://ko-fi.com/seyacat"
+          :lang="locale"
+        ></closer-click-support>
       </div>
 
       <div class="mobile-menu" :class="{ open: menuOpen }">
