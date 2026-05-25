@@ -5,7 +5,14 @@ import { VitePWA } from 'vite-plugin-pwa'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          // Web Component del ecosistema (@gatoseya/closer-click-support)
+          isCustomElement: (tag) => tag === 'closer-click-support',
+        },
+      },
+    }),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['images/favicon.ico'],

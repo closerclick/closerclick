@@ -1,8 +1,241 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 
 const isScrolled = ref(false)
 const menuOpen = ref(false)
+
+/* ---------------- i18n (ES / EN) ---------------- */
+type Locale = 'es' | 'en'
+const LANG_KEY = 'closerclick.lang'
+
+const detectLocale = (): Locale => {
+  const saved = localStorage.getItem(LANG_KEY)
+  if (saved === 'es' || saved === 'en') return saved
+  return (navigator.language || 'es').toLowerCase().startsWith('en') ? 'en' : 'es'
+}
+
+const locale = ref<Locale>(detectLocale())
+
+const messages = {
+  es: {
+    htmlLang: 'es',
+    nav: { apps: 'Aplicaciones', service: 'Servicio', api: 'API', install: 'Instalar App' },
+    install: {
+      ios: 'Para instalar: pulsa el botón Compartir y luego "Añadir a pantalla de inicio".',
+      other: 'Tu navegador todavía no permite la instalación automática. Usa el menú del navegador para instalar la app.',
+    },
+    langToggle: 'EN',
+    langLabel: 'Cambiar idioma a inglés',
+    hero: {
+      subtitle:
+        'Un ecosistema de aplicaciones que corren del lado del cliente, conectándose a través de un proxy descentralizado para gestionar y compartir contenido',
+      manifestoStrong: 'Tu información, en tu servidor, bajo tus reglas.',
+      manifestoRest:
+        ' Lo que es tuyo, se queda contigo: tú decides qué compartes, cómo lo compartes y cuándo lo compartes. Sin intermediarios, sin nubes ajenas, sin letra pequeña.',
+      cta: 'Descubre Más',
+    },
+    apps: {
+      title: 'Aplicaciones',
+      text: 'Aplicaciones que usan el proxy de Closer Click.',
+      open: 'Abrir aplicación',
+      fullHome: 'Ver home completo',
+    },
+    service: {
+      title: 'Servicio',
+      text: 'Comunicación por WebSocket ligero que enruta mensajes entre clientes mediante tokens cortos, sin almacenar conversaciones ni requerir cuentas.',
+    },
+    api: {
+      title: 'API',
+      text: 'Una sola conexión WebSocket. Mensajes JSON. Sin endpoints HTTP, sin SDK obligatorio.',
+    },
+    footer: {
+      title: 'La filosofía Closer Click',
+      what: { h: 'Qué comparto', p: 'Solo la información que decido exponer, nada más.' },
+      how: { h: 'Cómo lo comparto', p: 'Con el formato, el acceso y las condiciones que yo defino.' },
+      when: { h: 'Cuándo lo comparto', p: 'En el momento que quiero, y lo retiro cuando quiero.' },
+      tagline: 'Todo sobre infraestructura que tú controlas. Eso es autohosteo. Eso es soberanía digital.',
+      copy: '© 2024 Team Closer Click. Todos los derechos reservados.',
+    },
+  },
+  en: {
+    htmlLang: 'en',
+    nav: { apps: 'Applications', service: 'Service', api: 'API', install: 'Install App' },
+    install: {
+      ios: 'To install: tap the Share button and then "Add to Home Screen".',
+      other: 'Your browser does not support automatic installation yet. Use the browser menu to install the app.',
+    },
+    langToggle: 'ES',
+    langLabel: 'Switch language to Spanish',
+    hero: {
+      subtitle:
+        'An ecosystem of client-side applications that connect through a decentralized proxy to manage and share content',
+      manifestoStrong: 'Your data, on your server, under your rules.',
+      manifestoRest:
+        ' What is yours stays with you: you decide what you share, how you share it and when you share it. No middlemen, no third-party clouds, no fine print.',
+      cta: 'Learn More',
+    },
+    apps: {
+      title: 'Applications',
+      text: 'Applications that use the Closer Click proxy.',
+      open: 'Open app',
+      fullHome: 'Show full home',
+    },
+    service: {
+      title: 'Service',
+      text: 'Lightweight WebSocket communication that routes messages between clients via short tokens, without storing conversations or requiring accounts.',
+    },
+    api: {
+      title: 'API',
+      text: 'A single WebSocket connection. JSON messages. No HTTP endpoints, no mandatory SDK.',
+    },
+    footer: {
+      title: 'The Closer Click philosophy',
+      what: { h: 'What I share', p: 'Only the information I choose to expose, nothing more.' },
+      how: { h: 'How I share it', p: 'With the format, access and conditions that I define.' },
+      when: { h: 'When I share it', p: 'The moment I want, and I take it back whenever I want.' },
+      tagline: 'All on infrastructure you control. That is self-hosting. That is digital sovereignty.',
+      copy: '© 2024 Team Closer Click. All rights reserved.',
+    },
+  },
+} as const
+
+const t = computed(() => messages[locale.value])
+
+type AppEntry = { name: string; repo: string; url: string; desc: { es: string; en: string } }
+const apps: AppEntry[] = [
+  {
+    name: 'Pronóstico Mundialista',
+    url: 'https://mundial.closer.click/',
+    repo: 'seyacat/pronostico-mundialista',
+    desc: {
+      es: 'Arma tu pronóstico del Mundial 2026 (48 selecciones) en tres modos (simple, gana/pierde o con marcador), compite con tus amigos y lleva tu tabla de aciertos. Se codifica completo en una cadena corta, se firma con tu identidad ECDSA del vault <code>id.closer.click</code> y se comparte por QR.',
+      en: 'Build your 2026 World Cup predictions (48 teams) in three modes (simple, win/lose or with scoreline), compete with your friends and track your hit table. It is fully encoded in a short string, signed with your ECDSA identity from the <code>id.closer.click</code> vault and shared by QR.',
+    },
+  },
+  {
+    name: 'Closer Click Chat',
+    url: 'https://chat.closer.click/',
+    repo: 'seyacat/simple-websocket-chat',
+    desc: {
+      es: 'Chat en tiempo real con salas públicas, descubrimiento de canales y mensajería P2P por WebRTC con caída automática al proxy WebSocket.',
+      en: 'Real-time chat with public rooms, channel discovery and P2P messaging over WebRTC with automatic fallback to the WebSocket proxy.',
+    },
+  },
+  {
+    name: 'Closer Click Messenger',
+    url: 'https://messenger.closer.click/',
+    repo: 'seyacat/closerclick_messenger',
+    desc: {
+      es: 'Mensajería 1-a-1 con cifrado E2E (ECDH+AES-GCM), contactos compartidos entre apps del ecosistema, hilos persistidos en <code>store.closer.click</code> (mismos mensajes en web + extensión), mensajes offline (proxy retiene 24 h) y ranking integrado. PWA instalable + extensión Chrome MV3 reusando la PWA via iframe.',
+      en: 'One-to-one messaging with E2E encryption (ECDH+AES-GCM), contacts shared across ecosystem apps, threads persisted in <code>store.closer.click</code> (same messages on web + extension), offline messages (proxy holds them for 24 h) and built-in ratings. Installable PWA + Chrome MV3 extension reusing the PWA via iframe.',
+    },
+  },
+  {
+    name: 'QRShare',
+    url: 'https://qrshare.closer.click/',
+    repo: 'seyacat/qrshare',
+    desc: {
+      es: 'Transferencia de archivos P2P por WebRTC. El proxy solo descubre los peers; los archivos viajan directamente entre dispositivos. Comparte por QR.',
+      en: 'P2P file transfer over WebRTC. The proxy only discovers peers; files travel directly between devices. Share by QR.',
+    },
+  },
+  {
+    name: 'Closer Click Chess',
+    url: 'https://chess.closer.click/',
+    repo: 'seyacat/simple-websocket-chess',
+    desc: {
+      es: 'Ajedrez online multijugador con transporte P2P por WebRTC cuando es posible. Crea partidas públicas o privadas; el lobby se actualiza en tiempo real con los eventos del proxy.',
+      en: 'Online multiplayer chess with P2P transport over WebRTC when possible. Create public or private games; the lobby updates in real time from the proxy events.',
+    },
+  },
+  {
+    name: 'Contador Ecuavóley',
+    url: 'https://ecuavoley.closer.click/',
+    repo: 'seyacat/ecuavoley-contador',
+    desc: {
+      es: 'Marcador para partidos de ecuavóley: dos paneles táctiles, indicador de saque, deshacer, cambio y reinicio. Gana el primero en llegar a 15.',
+      en: 'Scoreboard for ecuavóley matches: two touch panels, serve indicator, undo, switch and reset. First to reach 15 wins.',
+    },
+  },
+  {
+    name: 'Contador Pádel',
+    url: 'https://padel.closer.click/',
+    repo: 'seyacat/padel-contador',
+    desc: {
+      es: 'Marcador para partidos de pádel con puntuación de tenis (0/15/30/40, juegos y sets): dos paneles táctiles, indicador de saque, tie-break, punto de oro opcional, deshacer y reinicio.',
+      en: 'Scoreboard for padel matches with tennis scoring (0/15/30/40, games and sets): two touch panels, serve indicator, tie-break, optional golden point, undo and reset.',
+    },
+  },
+  {
+    name: 'GridGame',
+    url: 'https://gridgame.closer.click/',
+    repo: 'seyacat/gridgame',
+    desc: {
+      es: 'Sandbox multijugador cooperativo en un grid. Mundo subjetivo: cada peer hostea lo que crea y carga el entorno alrededor a medida que se mueve. Ground procedural determinista, props/items/personajes/enemigos programables vía DSL, resolución de conflictos por reputación (web-of-trust de identity) y recencia. Loot no-exclusivo, summon de enemigos por turnos ponderados por reputación.',
+      en: 'Cooperative multiplayer sandbox on a grid. Subjective world: each peer hosts what it creates and loads the surrounding environment as it moves. Deterministic procedural ground, props/items/characters/enemies programmable via DSL, conflict resolution by reputation (identity web-of-trust) and recency. Non-exclusive loot, enemy summoning in turns weighted by reputation.',
+    },
+  },
+  {
+    name: 'Favicon Generator',
+    url: 'https://favicon.closer.click/',
+    repo: 'seyacat/favicon-generator',
+    desc: {
+      es: 'Genera favicons e íconos <code>.ico</code> compatibles con Windows a partir de una imagen PNG/JPG, listos para tu sitio o PWA. Todo en el navegador, sin subir nada a un servidor.',
+      en: 'Generate favicons and Windows-compatible <code>.ico</code> icons from a PNG/JPG image, ready for your site or PWA. All in the browser, without uploading anything to a server.',
+    },
+  },
+]
+
+const serviceItems = computed(() =>
+  locale.value === 'en'
+    ? [
+        { h: 'Ephemeral tokens', p: 'On connect, a short token (4 characters) is assigned. It acts as the client\'s logical address and is released on disconnect.' },
+        { h: 'Public channels', p: 'Any client can publish itself in a named channel, list it or query its member count. 20 min TTL and up to 100 tokens per channel.' },
+        { h: 'ECDSA P-256 signatures', p: 'Channel operations are signed with a public JWK key (P-256 curve). The proxy verifies the signature before accepting publish/unpublish/list.' },
+        { h: 'No persistent state', p: 'The proxy stores no messages on disk and has no database. Only live memory: connections, active peers and channel entries.' },
+        { h: 'WebRTC with proxy fallback', p: 'The client tries to open an <code>RTCDataChannel</code> with each peer (signaling through the proxy itself, public STUN). If negotiation succeeds messages travel P2P; if it fails, they keep flowing through the proxy transparently.' },
+        { h: '24 h offline queue + multi-instance', p: 'After a signed <code>identify</code>, clients can address messages by <code>to_publickey</code>. If several instances are online (web + extension + second tab…) the proxy does a <strong>fan-out</strong> to all of them. If they are all offline, it holds them in memory for up to 24 h (200 msgs / 1 MB per pubkey) and delivers on the first reconnect.' },
+        { h: 'Shared vaults', p: 'Two static subdomains keep user state in their own <code>localStorage</code> and are accessed by all apps via iframe + <code>postMessage</code>: <code>id.closer.click</code> (keys, contacts, ratings) and <code>store.closer.click</code> (DM threads). Same contacts and same messages in any ecosystem app within the same browser.' },
+      ]
+    : [
+        { h: 'Tokens efímeros', p: 'Al conectar se asigna un token corto (4 caracteres). Sirve como dirección lógica del cliente y se libera al desconectar.' },
+        { h: 'Canales públicos', p: 'Cualquier cliente puede publicarse en un canal nombrado, listarlo o consultar el número de miembros. TTL de 20 min y hasta 100 tokens por canal.' },
+        { h: 'Firma ECDSA P-256', p: 'Las operaciones sobre canales se firman con clave pública JWK (curva P-256). El proxy verifica la firma antes de aceptar publish/unpublish/list.' },
+        { h: 'Sin estado persistente', p: 'El proxy no guarda mensajes en disco ni tiene base de datos. Solo memoria viva: conexiones, pares activos y entradas de canal.' },
+        { h: 'WebRTC con fallback al proxy', p: 'El cliente intenta abrir un <code>RTCDataChannel</code> con cada peer (señalización por el propio proxy, STUN público). Si la negociación tiene éxito los mensajes viajan P2P; si falla, siguen por el proxy de forma transparente.' },
+        { h: 'Cola offline 24 h + multi-instancia', p: 'Tras un <code>identify</code> firmado, los clientes pueden direccionar mensajes por <code>to_publickey</code>. Si hay varias instancias online (web + extensión + segunda pestaña…) el proxy hace <strong>fan-out</strong> a todas. Si todas están offline, retiene en memoria hasta 24 h (200 msgs / 1 MB por pubkey) y entrega al primer reconnect.' },
+        { h: 'Vaults compartidos', p: 'Dos subdominios estáticos guardan estado del usuario en su propio <code>localStorage</code> y son accedidos por todas las apps vía iframe + <code>postMessage</code>: <code>id.closer.click</code> (claves, contactos, ratings) y <code>store.closer.click</code> (hilos de DMs). Mismos contactos y mismos mensajes en cualquier app del ecosistema dentro del mismo navegador.' },
+      ]
+)
+
+const apiItems = computed(() =>
+  locale.value === 'en'
+    ? [
+        { h: 'Direct message', p: '<code>{ to: ["TKN1","TKN2"], message: ... }</code> — delivers to one or several tokens. The receiver gets <code>{ type: "message", from, message }</code>.' },
+        { h: 'publish / unpublish', p: '<code>{ type: "publish", channel: { data, signature } }</code> makes the client visible in a channel. Notifies join/leave to the other members.' },
+        { h: 'list / list_channels / channel_count', p: 'Discovery: tokens in a channel, channels by prefix, count. Useful for building lobbies or public rooms.' },
+        { h: 'disconnect', p: '<code>{ type: "disconnect", target }</code> breaks the logical pair with another token and notifies both parties.' },
+      ]
+    : [
+        { h: 'Mensaje directo', p: '<code>{ to: ["TKN1","TKN2"], message: ... }</code> — entrega a uno o varios tokens. El receptor recibe <code>{ type: "message", from, message }</code>.' },
+        { h: 'publish / unpublish', p: '<code>{ type: "publish", channel: { data, signature } }</code> hace visible al cliente en un canal. Notifica join/leave a los demás miembros.' },
+        { h: 'list / list_channels / channel_count', p: 'Descubrimiento: tokens en un canal, canales por prefijo, conteo. Útil para construir lobbies o salas públicas.' },
+        { h: 'disconnect', p: '<code>{ type: "disconnect", target }</code> rompe el par lógico con otro token y notifica a ambas partes.' },
+      ]
+)
+
+const toggleLocale = () => {
+  locale.value = locale.value === 'es' ? 'en' : 'es'
+}
+
+watch(
+  locale,
+  (l) => {
+    localStorage.setItem(LANG_KEY, l)
+    document.documentElement.lang = l
+  },
+  { immediate: true }
+)
 
 const VISITED_KEY = 'closerclick.visited'
 const compact = ref(localStorage.getItem(VISITED_KEY) === '1')
@@ -38,9 +271,9 @@ const installApp = async () => {
     return
   }
   if (isIOS) {
-    alert('Para instalar: pulsa el botón Compartir y luego "Añadir a pantalla de inicio".')
+    alert(t.value.install.ios)
   } else {
-    alert('Tu navegador todavía no permite la instalación automática. Usa el menú del navegador para instalar la app.')
+    alert(t.value.install.other)
   }
 }
 
@@ -84,6 +317,8 @@ onUnmounted(() => {
 
 <template>
   <div class="app">
+    <closer-click-support href="https://ko-fi.com/seyacat" :lang="locale"></closer-click-support>
+
     <nav :class="['navbar', { 'scrolled': isScrolled }]">
       <div class="nav-container">
         <div class="logo">
@@ -91,16 +326,24 @@ onUnmounted(() => {
           <span class="logo-text">Closer Click</span>
         </div>
 
-        <button
-          v-if="!isStandalone"
-          @click="installApp"
-          class="install-btn"
-        >Instalar App</button>
+        <div class="nav-actions">
+          <button
+            @click="toggleLocale"
+            class="lang-btn"
+            :aria-label="t.langLabel"
+          >{{ t.langToggle }}</button>
+
+          <button
+            v-if="!isStandalone"
+            @click="installApp"
+            class="install-btn"
+          >{{ t.nav.install }}</button>
+        </div>
 
         <div class="nav-links desktop-links">
-          <a @click="scrollToSection('aplicaciones')" class="nav-link">Aplicaciones</a>
-          <a @click="scrollToSection('servicio')" class="nav-link">Servicio</a>
-          <a @click="scrollToSection('api')" class="nav-link">API</a>
+          <a @click="scrollToSection('aplicaciones')" class="nav-link">{{ t.nav.apps }}</a>
+          <a @click="scrollToSection('servicio')" class="nav-link">{{ t.nav.service }}</a>
+          <a @click="scrollToSection('api')" class="nav-link">{{ t.nav.api }}</a>
         </div>
 
         <button
@@ -116,9 +359,9 @@ onUnmounted(() => {
       </div>
 
       <div class="mobile-menu" :class="{ open: menuOpen }">
-        <a @click="scrollToSection('aplicaciones')" class="nav-link">Aplicaciones</a>
-        <a @click="scrollToSection('servicio')" class="nav-link">Servicio</a>
-        <a @click="scrollToSection('api')" class="nav-link">API</a>
+        <a @click="scrollToSection('aplicaciones')" class="nav-link">{{ t.nav.apps }}</a>
+        <a @click="scrollToSection('servicio')" class="nav-link">{{ t.nav.service }}</a>
+        <a @click="scrollToSection('api')" class="nav-link">{{ t.nav.api }}</a>
       </div>
     </nav>
 
@@ -126,18 +369,12 @@ onUnmounted(() => {
       <div class="hero-overlay"></div>
       <div class="hero-content">
         <h1 class="hero-title">Closer Click</h1>
-        <p class="hero-subtitle">
-          Un ecosistema de aplicaciones que corren del lado del cliente,
-          conectándose a través de un proxy descentralizado para gestionar y compartir contenido
-        </p>
+        <p class="hero-subtitle">{{ t.hero.subtitle }}</p>
         <p class="hero-manifesto">
-          <strong>Tu información, en tu servidor, bajo tus reglas.</strong>
-          Lo que es tuyo, se queda contigo: tú decides <em>qué</em> compartes,
-          <em>cómo</em> lo compartes y <em>cuándo</em> lo compartes. Sin intermediarios,
-          sin nubes ajenas, sin letra pequeña.
+          <strong>{{ t.hero.manifestoStrong }}</strong>{{ t.hero.manifestoRest }}
         </p>
         <button @click="scrollToSection('aplicaciones')" class="cta-button">
-          Descubre Más
+          {{ t.hero.cta }}
         </button>
       </div>
     </section>
@@ -151,154 +388,24 @@ onUnmounted(() => {
     >
       <div class="parallax-bg aplicaciones-bg"></div>
       <div class="section-content">
-        <h2 class="section-title">Aplicaciones</h2>
-        <p class="section-text">
-          Aplicaciones que usan el proxy de Closer Click.
-        </p>
+        <h2 class="section-title">{{ t.apps.title }}</h2>
+        <p class="section-text">{{ t.apps.text }}</p>
         <div class="apps-grid">
-          <div class="app-card">
-            <h3>Pronóstico Mundialista</h3>
-            <p>Arma tu pronóstico del Mundial 2026 (48 selecciones) en tres modos (simple, gana/pierde o con marcador), compite con tus amigos y lleva tu tabla de aciertos. Se codifica completo en una cadena corta, se firma con tu identidad ECDSA del vault <code>id.closer.click</code> y se comparte por QR.</p>
+          <div class="app-card" v-for="a in apps" :key="a.url">
+            <h3>{{ a.name }}</h3>
+            <p v-html="a.desc[locale]"></p>
             <a
-              href="https://mundial.closer.click/"
+              :href="a.url"
               target="_blank"
               rel="noopener"
               class="app-button"
-            >Abrir aplicación</a>
+            >{{ t.apps.open }}</a>
             <a
-              href="https://github.com/seyacat/pronostico-mundialista"
+              :href="'https://github.com/' + a.repo"
               target="_blank"
               rel="noopener"
               class="app-repo"
-            >github.com/seyacat/pronostico-mundialista</a>
-          </div>
-          <div class="app-card">
-            <h3>Closer Click Chat</h3>
-            <p>Chat en tiempo real con salas públicas, descubrimiento de canales y mensajería P2P por WebRTC con caída automática al proxy WebSocket.</p>
-            <a
-              href="https://chat.closer.click/"
-              target="_blank"
-              rel="noopener"
-              class="app-button"
-            >Abrir aplicación</a>
-            <a
-              href="https://github.com/seyacat/simple-websocket-chat"
-              target="_blank"
-              rel="noopener"
-              class="app-repo"
-            >github.com/seyacat/simple-websocket-chat</a>
-          </div>
-          <div class="app-card">
-            <h3>Closer Click Messenger</h3>
-            <p>Mensajería 1-a-1 con cifrado E2E (ECDH+AES-GCM), contactos compartidos entre apps del ecosistema, hilos persistidos en <code>store.closer.click</code> (mismos mensajes en web + extensión), mensajes offline (proxy retiene 24 h) y ranking integrado. PWA instalable + extensión Chrome MV3 reusando la PWA via iframe.</p>
-            <a
-              href="https://messenger.closer.click/"
-              target="_blank"
-              rel="noopener"
-              class="app-button"
-            >Abrir aplicación</a>
-            <a
-              href="https://github.com/seyacat/closerclick_messenger"
-              target="_blank"
-              rel="noopener"
-              class="app-repo"
-            >github.com/seyacat/closerclick_messenger</a>
-          </div>
-          <div class="app-card">
-            <h3>QRShare</h3>
-            <p>Transferencia de archivos P2P por WebRTC. El proxy solo descubre los peers; los archivos viajan directamente entre dispositivos. Comparte por QR.</p>
-            <a
-              href="https://qrshare.closer.click/"
-              target="_blank"
-              rel="noopener"
-              class="app-button"
-            >Abrir aplicación</a>
-            <a
-              href="https://github.com/seyacat/qrshare"
-              target="_blank"
-              rel="noopener"
-              class="app-repo"
-            >github.com/seyacat/qrshare</a>
-          </div>
-          <div class="app-card">
-            <h3>Closer Click Chess</h3>
-            <p>Ajedrez online multijugador con transporte P2P por WebRTC cuando es posible. Crea partidas públicas o privadas; el lobby se actualiza en tiempo real con los eventos del proxy.</p>
-            <a
-              href="https://chess.closer.click/"
-              target="_blank"
-              rel="noopener"
-              class="app-button"
-            >Abrir aplicación</a>
-            <a
-              href="https://github.com/seyacat/simple-websocket-chess"
-              target="_blank"
-              rel="noopener"
-              class="app-repo"
-            >github.com/seyacat/simple-websocket-chess</a>
-          </div>
-          <div class="app-card">
-            <h3>Contador Ecuavóley</h3>
-            <p>Marcador para partidos de ecuavóley: dos paneles táctiles, indicador de saque, deshacer, cambio y reinicio. Gana el primero en llegar a 15.</p>
-            <a
-              href="https://ecuavoley.closer.click/"
-              target="_blank"
-              rel="noopener"
-              class="app-button"
-            >Abrir aplicación</a>
-            <a
-              href="https://github.com/seyacat/ecuavoley-contador"
-              target="_blank"
-              rel="noopener"
-              class="app-repo"
-            >github.com/seyacat/ecuavoley-contador</a>
-          </div>
-          <div class="app-card">
-            <h3>Contador Pádel</h3>
-            <p>Marcador para partidos de pádel con puntuación de tenis (0/15/30/40, juegos y sets): dos paneles táctiles, indicador de saque, tie-break, punto de oro opcional, deshacer y reinicio.</p>
-            <a
-              href="https://padel.closer.click/"
-              target="_blank"
-              rel="noopener"
-              class="app-button"
-            >Abrir aplicación</a>
-            <a
-              href="https://github.com/seyacat/padel-contador"
-              target="_blank"
-              rel="noopener"
-              class="app-repo"
-            >github.com/seyacat/padel-contador</a>
-          </div>
-          <div class="app-card">
-            <h3>GridGame</h3>
-            <p>Sandbox multijugador cooperativo en un grid. Mundo subjetivo: cada peer hostea lo que crea y carga el entorno alrededor a medida que se mueve. Ground procedural determinista, props/items/personajes/enemigos programables vía DSL, resolución de conflictos por reputación (web-of-trust de identity) y recencia. Loot no-exclusivo, summon de enemigos por turnos ponderados por reputación.</p>
-            <a
-              href="https://gridgame.closer.click/"
-              target="_blank"
-              rel="noopener"
-              class="app-button"
-            >Abrir aplicación</a>
-            <a
-              href="https://github.com/seyacat/gridgame"
-              target="_blank"
-              rel="noopener"
-              class="app-repo"
-            >github.com/seyacat/gridgame</a>
-          </div>
-          <div class="app-card">
-            <h3>Favicon Generator</h3>
-            <p>Genera favicons e íconos <code>.ico</code> compatibles con Windows a partir de una imagen PNG/JPG, listos para tu sitio o PWA. Todo en el navegador, sin subir nada a un servidor.</p>
-            <a
-              href="https://favicon.closer.click/"
-              target="_blank"
-              rel="noopener"
-              class="app-button"
-            >Abrir aplicación</a>
-            <a
-              href="https://github.com/seyacat/favicon-generator"
-              target="_blank"
-              rel="noopener"
-              class="app-repo"
-            >github.com/seyacat/favicon-generator</a>
+            >github.com/{{ a.repo }}</a>
           </div>
         </div>
 
@@ -306,46 +413,19 @@ onUnmounted(() => {
           v-if="compact"
           @click="showFullHome"
           class="full-home-button"
-        >Ver home completo</button>
+        >{{ t.apps.fullHome }}</button>
       </div>
     </section>
 
     <section v-if="!compact" id="servicio" class="section servicio-section">
       <div class="parallax-bg servicio-bg"></div>
       <div class="section-content">
-        <h2 class="section-title">Servicio</h2>
-        <p class="section-text">
-          Comunicación por WebSocket ligero que enruta mensajes
-          entre clientes mediante tokens cortos, sin almacenar conversaciones ni requerir cuentas.
-        </p>
+        <h2 class="section-title">{{ t.service.title }}</h2>
+        <p class="section-text">{{ t.service.text }}</p>
         <div class="service-features">
-          <div class="service-item">
-            <h3>Tokens efímeros</h3>
-            <p>Al conectar se asigna un token corto (4 caracteres). Sirve como dirección lógica del cliente y se libera al desconectar.</p>
-          </div>
-          <div class="service-item">
-            <h3>Canales públicos</h3>
-            <p>Cualquier cliente puede publicarse en un canal nombrado, listarlo o consultar el número de miembros. TTL de 20 min y hasta 100 tokens por canal.</p>
-          </div>
-          <div class="service-item">
-            <h3>Firma ECDSA P-256</h3>
-            <p>Las operaciones sobre canales se firman con clave pública JWK (curva P-256). El proxy verifica la firma antes de aceptar publish/unpublish/list.</p>
-          </div>
-          <div class="service-item">
-            <h3>Sin estado persistente</h3>
-            <p>El proxy no guarda mensajes en disco ni tiene base de datos. Solo memoria viva: conexiones, pares activos y entradas de canal.</p>
-          </div>
-          <div class="service-item">
-            <h3>WebRTC con fallback al proxy</h3>
-            <p>El cliente intenta abrir un <code>RTCDataChannel</code> con cada peer (señalización por el propio proxy, STUN público). Si la negociación tiene éxito los mensajes viajan P2P; si falla, siguen por el proxy de forma transparente.</p>
-          </div>
-          <div class="service-item">
-            <h3>Cola offline 24 h + multi-instancia</h3>
-            <p>Tras un <code>identify</code> firmado, los clientes pueden direccionar mensajes por <code>to_publickey</code>. Si hay varias instancias online (web + extensión + segunda pestaña…) el proxy hace <strong>fan-out</strong> a todas. Si todas están offline, retiene en memoria hasta 24 h (200 msgs / 1 MB por pubkey) y entrega al primer reconnect.</p>
-          </div>
-          <div class="service-item">
-            <h3>Vaults compartidos</h3>
-            <p>Dos subdominios estáticos guardan estado del usuario en su propio <code>localStorage</code> y son accedidos por todas las apps vía iframe + <code>postMessage</code>: <code>id.closer.click</code> (claves, contactos, ratings) y <code>store.closer.click</code> (hilos de DMs). Mismos contactos y mismos mensajes en cualquier app del ecosistema dentro del mismo navegador.</p>
+          <div class="service-item" v-for="(item, i) in serviceItems" :key="i">
+            <h3>{{ item.h }}</h3>
+            <p v-html="item.p"></p>
           </div>
         </div>
       </div>
@@ -354,26 +434,12 @@ onUnmounted(() => {
     <section v-if="!compact" id="api" class="section api-section">
       <div class="parallax-bg api-bg"></div>
       <div class="section-content">
-        <h2 class="section-title">API</h2>
-        <p class="section-text">
-          Una sola conexión WebSocket. Mensajes JSON. Sin endpoints HTTP, sin SDK obligatorio.
-        </p>
+        <h2 class="section-title">{{ t.api.title }}</h2>
+        <p class="section-text">{{ t.api.text }}</p>
         <div class="api-features">
-          <div class="api-item">
-            <h3>Mensaje directo</h3>
-            <p><code>{ to: ["TKN1","TKN2"], message: ... }</code> — entrega a uno o varios tokens. El receptor recibe <code>{ type: "message", from, message }</code>.</p>
-          </div>
-          <div class="api-item">
-            <h3>publish / unpublish</h3>
-            <p><code>{ type: "publish", channel: { data, signature } }</code> hace visible al cliente en un canal. Notifica join/leave a los demás miembros.</p>
-          </div>
-          <div class="api-item">
-            <h3>list / list_channels / channel_count</h3>
-            <p>Descubrimiento: tokens en un canal, canales por prefijo, conteo. Útil para construir lobbies o salas públicas.</p>
-          </div>
-          <div class="api-item">
-            <h3>disconnect</h3>
-            <p><code>{ type: "disconnect", target }</code> rompe el par lógico con otro token y notifica a ambas partes.</p>
+          <div class="api-item" v-for="(item, i) in apiItems" :key="i">
+            <h3>{{ item.h }}</h3>
+            <p v-html="item.p"></p>
           </div>
         </div>
       </div>
@@ -381,25 +447,23 @@ onUnmounted(() => {
 
     <footer class="footer">
       <div class="footer-content">
-        <h3 class="footer-philosophy-title">La filosofía Closer Click</h3>
+        <h3 class="footer-philosophy-title">{{ t.footer.title }}</h3>
         <div class="footer-pillars">
           <div class="footer-pillar">
-            <h4>Qué comparto</h4>
-            <p>Solo la información que decido exponer, nada más.</p>
+            <h4>{{ t.footer.what.h }}</h4>
+            <p>{{ t.footer.what.p }}</p>
           </div>
           <div class="footer-pillar">
-            <h4>Cómo lo comparto</h4>
-            <p>Con el formato, el acceso y las condiciones que yo defino.</p>
+            <h4>{{ t.footer.how.h }}</h4>
+            <p>{{ t.footer.how.p }}</p>
           </div>
           <div class="footer-pillar">
-            <h4>Cuándo lo comparto</h4>
-            <p>En el momento que quiero, y lo retiro cuando quiero.</p>
+            <h4>{{ t.footer.when.h }}</h4>
+            <p>{{ t.footer.when.p }}</p>
           </div>
         </div>
-        <p class="footer-tagline">
-          Todo sobre infraestructura que tú controlas. Eso es autohosteo. Eso es soberanía digital.
-        </p>
-        <p class="footer-copy">&copy; 2024 Team Closer Click. Todos los derechos reservados.</p>
+        <p class="footer-tagline">{{ t.footer.tagline }}</p>
+        <p class="footer-copy">{{ t.footer.copy }}</p>
       </div>
     </footer>
   </div>
@@ -419,11 +483,26 @@ onUnmounted(() => {
 .logo { display: flex; align-items: center; gap: 0.5rem; }
 .logo-img { height: 40px; width: auto; }
 .logo-text { font-size: 1.5rem; font-weight: bold; color: #ffffff; }
+.nav-actions { display: flex; align-items: center; gap: 0.75rem; }
 .nav-links { display: flex; gap: 2rem; }
 .nav-link { color: #ffffff; text-decoration: none; font-weight: 500; cursor: pointer; transition: color 0.3s ease; position: relative; }
 .nav-link:hover { color: #3498db; }
 .nav-link::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: #3498db; transition: width 0.3s ease; }
 .nav-link:hover::after { width: 100%; }
+
+.lang-btn {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  min-width: 2.5rem;
+}
+.lang-btn:hover { background: rgba(255, 255, 255, 0.12); border-color: #fff; }
 
 .install-btn {
   background: #3498db;
@@ -486,8 +565,6 @@ onUnmounted(() => {
   .hamburger { display: flex; }
   .mobile-menu { display: flex; }
   .install-btn {
-    margin-left: auto;
-    margin-right: auto;
     padding: 0.4rem 0.9rem;
     font-size: 0.85rem;
   }
