@@ -417,15 +417,17 @@ onUnmounted(() => {
         <p class="section-text">{{ t.apps.text }}</p>
         <div class="apps-grid">
           <div class="app-card" v-for="a in apps" :key="a.url">
-            <img class="app-logo" :src="a.logo" :alt="a.name" width="120" height="120" />
-            <h3>{{ a.name }}</h3>
-            <p v-html="a.desc[locale]"></p>
             <a
               :href="a.url"
               target="_blank"
               rel="noopener"
-              class="app-button"
-            >{{ t.apps.open }}</a>
+              class="app-logo-link"
+              :aria-label="t.apps.open + ': ' + a.name"
+            >
+              <img class="app-logo" :src="a.logo" :alt="a.name" width="120" height="120" />
+            </a>
+            <h3>{{ a.name }}</h3>
+            <p v-html="a.desc[locale]"></p>
             <a
               :href="'https://github.com/' + a.repo"
               target="_blank"
@@ -640,7 +642,8 @@ onUnmounted(() => {
 
 .aplicaciones-section.apps-only .section-title,
 .aplicaciones-section.apps-only > .section-content > .section-text,
-.aplicaciones-section.apps-only .app-card > p {
+.aplicaciones-section.apps-only .app-card > p,
+.aplicaciones-section.apps-only .app-repo {
   display: none;
 }
 .aplicaciones-section.apps-only .app-card {
@@ -702,8 +705,10 @@ onUnmounted(() => {
 .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 3rem; }
 .app-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); transition: transform 0.3s ease; display: flex; flex-direction: column; align-items: center; text-align: center; }
 .app-card:hover { transform: translateY(-5px); }
-.app-logo { width: 84px; height: 84px; margin-bottom: 1.25rem; border-radius: 20px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); transition: transform 0.3s ease; }
+.app-logo-link { display: inline-block; line-height: 0; cursor: pointer; border-radius: 20px; }
+.app-logo { width: 84px; height: 84px; margin-bottom: 1.25rem; border-radius: 20px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease; }
 .app-card:hover .app-logo { transform: scale(1.06) rotate(-3deg); }
+.app-logo-link:hover .app-logo { transform: scale(1.1) rotate(-3deg); box-shadow: 0 12px 32px rgba(52, 152, 219, 0.45); }
 .app-card h3 { font-size: 1.5rem; margin-bottom: 1rem; color: #3498db; }
 .app-card p { line-height: 1.6; margin-bottom: 1.5rem; }
 .app-button { background: #3498db; color: white; border: none; padding: 0.75rem 2rem; font-size: 1rem; font-weight: 600; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3); text-decoration: none; display: inline-block; }
