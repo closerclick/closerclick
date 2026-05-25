@@ -1,5 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import mundialLogo from './assets/apps/mundial.svg'
+import chatLogo from './assets/apps/chat.svg'
+import messengerLogo from './assets/apps/messenger.svg'
+import qrshareLogo from './assets/apps/qrshare.svg'
+import chessLogo from './assets/apps/chess.svg'
+import ecuavoleyLogo from './assets/apps/ecuavoley.svg'
+import padelLogo from './assets/apps/padel.svg'
+import gridgameLogo from './assets/apps/gridgame.svg'
+import faviconLogo from './assets/apps/favicon.svg'
 
 const isScrolled = ref(false)
 const menuOpen = ref(false)
@@ -101,11 +110,12 @@ const messages = {
 
 const t = computed(() => messages[locale.value])
 
-type AppEntry = { name: string; repo: string; url: string; desc: { es: string; en: string } }
+type AppEntry = { name: string; repo: string; url: string; logo: string; desc: { es: string; en: string } }
 const apps: AppEntry[] = [
   {
     name: 'Pronóstico Mundialista',
     url: 'https://mundial.closer.click/',
+    logo: mundialLogo,
     repo: 'seyacat/pronostico-mundialista',
     desc: {
       es: 'Arma tu pronóstico del Mundial 2026 (48 selecciones) en tres modos (simple, gana/pierde o con marcador), compite con tus amigos y lleva tu tabla de aciertos. Se codifica completo en una cadena corta, se firma con tu identidad ECDSA del vault <code>id.closer.click</code> y se comparte por QR.',
@@ -115,6 +125,7 @@ const apps: AppEntry[] = [
   {
     name: 'Closer Click Chat',
     url: 'https://chat.closer.click/',
+    logo: chatLogo,
     repo: 'seyacat/simple-websocket-chat',
     desc: {
       es: 'Chat en tiempo real con salas públicas, descubrimiento de canales y mensajería P2P por WebRTC con caída automática al proxy WebSocket.',
@@ -124,6 +135,7 @@ const apps: AppEntry[] = [
   {
     name: 'Closer Click Messenger',
     url: 'https://messenger.closer.click/',
+    logo: messengerLogo,
     repo: 'seyacat/closerclick_messenger',
     desc: {
       es: 'Mensajería 1-a-1 con cifrado E2E (ECDH+AES-GCM), contactos compartidos entre apps del ecosistema, hilos persistidos en <code>store.closer.click</code> (mismos mensajes en web + extensión), mensajes offline (proxy retiene 24 h) y ranking integrado. PWA instalable + extensión Chrome MV3 reusando la PWA via iframe.',
@@ -133,6 +145,7 @@ const apps: AppEntry[] = [
   {
     name: 'QRShare',
     url: 'https://qrshare.closer.click/',
+    logo: qrshareLogo,
     repo: 'seyacat/qrshare',
     desc: {
       es: 'Transferencia de archivos P2P por WebRTC. El proxy solo descubre los peers; los archivos viajan directamente entre dispositivos. Comparte por QR.',
@@ -142,6 +155,7 @@ const apps: AppEntry[] = [
   {
     name: 'Closer Click Chess',
     url: 'https://chess.closer.click/',
+    logo: chessLogo,
     repo: 'seyacat/simple-websocket-chess',
     desc: {
       es: 'Ajedrez online multijugador con transporte P2P por WebRTC cuando es posible. Crea partidas públicas o privadas; el lobby se actualiza en tiempo real con los eventos del proxy.',
@@ -151,6 +165,7 @@ const apps: AppEntry[] = [
   {
     name: 'Contador Ecuavóley',
     url: 'https://ecuavoley.closer.click/',
+    logo: ecuavoleyLogo,
     repo: 'seyacat/ecuavoley-contador',
     desc: {
       es: 'Marcador para partidos de ecuavóley: dos paneles táctiles, indicador de saque, deshacer, cambio y reinicio. Gana el primero en llegar a 15.',
@@ -160,6 +175,7 @@ const apps: AppEntry[] = [
   {
     name: 'Contador Pádel',
     url: 'https://padel.closer.click/',
+    logo: padelLogo,
     repo: 'seyacat/padel-contador',
     desc: {
       es: 'Marcador para partidos de pádel con puntuación de tenis (0/15/30/40, juegos y sets): dos paneles táctiles, indicador de saque, tie-break, punto de oro opcional, deshacer y reinicio.',
@@ -169,6 +185,7 @@ const apps: AppEntry[] = [
   {
     name: 'GridGame',
     url: 'https://gridgame.closer.click/',
+    logo: gridgameLogo,
     repo: 'seyacat/gridgame',
     desc: {
       es: 'Sandbox multijugador cooperativo en un grid. Mundo subjetivo: cada peer hostea lo que crea y carga el entorno alrededor a medida que se mueve. Ground procedural determinista, props/items/personajes/enemigos programables vía DSL, resolución de conflictos por reputación (web-of-trust de identity) y recencia. Loot no-exclusivo, summon de enemigos por turnos ponderados por reputación.',
@@ -178,6 +195,7 @@ const apps: AppEntry[] = [
   {
     name: 'Favicon Generator',
     url: 'https://favicon.closer.click/',
+    logo: faviconLogo,
     repo: 'seyacat/favicon-generator',
     desc: {
       es: 'Genera favicons e íconos <code>.ico</code> compatibles con Windows a partir de una imagen PNG/JPG, listos para tu sitio o PWA. Todo en el navegador, sin subir nada a un servidor.',
@@ -399,6 +417,7 @@ onUnmounted(() => {
         <p class="section-text">{{ t.apps.text }}</p>
         <div class="apps-grid">
           <div class="app-card" v-for="a in apps" :key="a.url">
+            <img class="app-logo" :src="a.logo" :alt="a.name" width="120" height="120" />
             <h3>{{ a.name }}</h3>
             <p v-html="a.desc[locale]"></p>
             <a
@@ -683,6 +702,8 @@ onUnmounted(() => {
 .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 3rem; }
 .app-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); transition: transform 0.3s ease; display: flex; flex-direction: column; align-items: center; text-align: center; }
 .app-card:hover { transform: translateY(-5px); }
+.app-logo { width: 84px; height: 84px; margin-bottom: 1.25rem; border-radius: 20px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); transition: transform 0.3s ease; }
+.app-card:hover .app-logo { transform: scale(1.06) rotate(-3deg); }
 .app-card h3 { font-size: 1.5rem; margin-bottom: 1rem; color: #3498db; }
 .app-card p { line-height: 1.6; margin-bottom: 1.5rem; }
 .app-button { background: #3498db; color: white; border: none; padding: 0.75rem 2rem; font-size: 1rem; font-weight: 600; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3); text-decoration: none; display: inline-block; }
