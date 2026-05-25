@@ -10,7 +10,7 @@
     "lint:fix": "eslint . --ext .vue,.js,.ts,.jsx,.tsx --fix"
   },
   "dependencies": {
-    "@gatoseya/closer-click-support": "^0.1.6",
+    "@gatoseya/closer-click-support": "^0.1.8",
     "vue": "^3.5.22"
   },
   "devDependencies": {
