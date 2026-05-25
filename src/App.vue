@@ -705,7 +705,8 @@ onUnmounted(() => {
 .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 3rem; }
 .app-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); transition: transform 0.3s ease; display: flex; flex-direction: column; align-items: center; text-align: center; }
 .app-card:hover { transform: translateY(-5px); }
-.app-logo-link { display: inline-block; line-height: 0; cursor: pointer; border-radius: 20px; }
+.app-logo-link { display: inline-block; line-height: 0; cursor: pointer; border-radius: 20px; outline: none; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
+.app-logo-link:focus, .app-logo-link:active, .app-logo-link:focus-visible { outline: none; }
 .app-logo { width: 84px; height: 84px; margin-bottom: 1.25rem; border-radius: 20px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease; }
 .app-card:hover .app-logo { transform: scale(1.06) rotate(-3deg); }
 .app-logo-link:hover .app-logo { transform: scale(1.1) rotate(-3deg); box-shadow: 0 12px 32px rgba(52, 152, 219, 0.45); }
