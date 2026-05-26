@@ -596,7 +596,11 @@ onUnmounted(() => {
 .mobile-menu .nav-link::after { display: none; }
 
 @media (max-width: 768px) {
-  .nav-container { padding: 0.75rem 1rem; }
+  .nav-container {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+    row-gap: 0.6rem;
+  }
   .desktop-links { display: none; }
   .hamburger { display: flex; }
   .mobile-menu { display: flex; }
@@ -606,6 +610,16 @@ onUnmounted(() => {
   }
   .logo-text { font-size: 1.1rem; }
   .logo-img { height: 32px; }
+
+  /* Fila 1: logo … moneda | burger. Fila 2: idioma + instalar. */
+  .logo { order: 1; }
+  .nav-support { order: 2; margin-left: auto; }
+  .hamburger { order: 3; margin-left: 1rem; }
+  .nav-actions {
+    order: 4;
+    flex-basis: 100%;
+    justify-content: flex-end;
+  }
 }
 
 .hero {
