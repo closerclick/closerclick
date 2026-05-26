@@ -618,7 +618,7 @@ onUnmounted(() => {
   .nav-actions {
     order: 4;
     flex-basis: 100%;
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
 }
 
