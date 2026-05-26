@@ -379,6 +379,8 @@ onUnmounted(() => {
         <closer-click-support
           class="nav-support"
           href="https://ko-fi.com/seyacat"
+          repo="seyacat/closerclick"
+          discord="https://discord.gg/GGn6NXNQMp"
           :lang="locale"
         ></closer-click-support>
       </div>
