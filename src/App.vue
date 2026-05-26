@@ -759,6 +759,15 @@ onUnmounted(() => {
   .nav-links { gap: 1rem; }
   .logo-text { font-size: 1.2rem; }
   .features-grid, .service-features, .api-features { grid-template-columns: 1fr; }
+
+  /* Modo compacto: 3 tarjetas por fila en mobile (logo + nombre) */
+  .aplicaciones-section.apps-only .apps-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .aplicaciones-section.apps-only .app-card { padding: 1rem 0.5rem; }
+  .aplicaciones-section.apps-only .app-logo { width: 64px; height: 64px; margin-bottom: 0; }
+  .aplicaciones-section.apps-only .app-card h3 { font-size: 1rem; margin-bottom: 0; }
 }
 
 @media (max-width: 480px) {
