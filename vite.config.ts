@@ -8,7 +8,7 @@ export default defineConfig({
     vue({
       template: {
         compilerOptions: {
-          // Web Component del ecosistema (@gatoseya/closer-click-support)
+          // Web Component del ecosistema (@closerclick/closer-click-support)
           isCustomElement: (tag) => tag === 'closer-click-support',
         },
       },
