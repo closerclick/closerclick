@@ -117,7 +117,7 @@ const apps: AppEntry[] = [
     name: 'Pronóstico Mundialista',
     url: 'https://mundial.closer.click/',
     logo: mundialLogo,
-    repo: 'seyacat/pronostico-mundialista',
+    repo: 'closerclick/pronostico-mundialista',
     desc: {
       es: 'Arma tu pronóstico del Mundial 2026 (48 selecciones) en tres modos (simple, gana/pierde o con marcador), compite con tus amigos y lleva tu tabla de aciertos. Se codifica completo en una cadena corta, se firma con tu identidad ECDSA del vault <code>id.closer.click</code> y se comparte por QR.',
       en: 'Build your 2026 World Cup predictions (48 teams) in three modes (simple, win/lose or with scoreline), compete with your friends and track your hit table. It is fully encoded in a short string, signed with your ECDSA identity from the <code>id.closer.click</code> vault and shared by QR.',
@@ -127,7 +127,7 @@ const apps: AppEntry[] = [
     name: 'Closer Click Chat',
     url: 'https://chat.closer.click/',
     logo: chatLogo,
-    repo: 'seyacat/simple-websocket-chat',
+    repo: 'closerclick/simple-websocket-chat',
     desc: {
       es: 'Chat en tiempo real con salas públicas, descubrimiento de canales y mensajería P2P por WebRTC con caída automática al proxy WebSocket.',
       en: 'Real-time chat with public rooms, channel discovery and P2P messaging over WebRTC with automatic fallback to the WebSocket proxy.',
@@ -137,7 +137,7 @@ const apps: AppEntry[] = [
     name: 'Closer Click Messenger',
     url: 'https://messenger.closer.click/',
     logo: messengerLogo,
-    repo: 'seyacat/closerclick_messenger',
+    repo: 'closerclick/closerclick_messenger',
     desc: {
       es: 'Mensajería 1-a-1 con cifrado E2E (ECDH+AES-GCM), contactos compartidos entre apps del ecosistema, hilos persistidos en <code>store.closer.click</code> (mismos mensajes en web + extensión), mensajes offline (proxy retiene 24 h) y ranking integrado. PWA instalable + extensión Chrome MV3 reusando la PWA via iframe.',
       en: 'One-to-one messaging with E2E encryption (ECDH+AES-GCM), contacts shared across ecosystem apps, threads persisted in <code>store.closer.click</code> (same messages on web + extension), offline messages (proxy holds them for 24 h) and built-in ratings. Installable PWA + Chrome MV3 extension reusing the PWA via iframe.',
@@ -147,7 +147,7 @@ const apps: AppEntry[] = [
     name: 'QRShare',
     url: 'https://qrshare.closer.click/',
     logo: qrshareLogo,
-    repo: 'seyacat/qrshare',
+    repo: 'closerclick/qrshare',
     desc: {
       es: 'Transferencia de archivos P2P por WebRTC. El proxy solo descubre los peers; los archivos viajan directamente entre dispositivos. Comparte por QR.',
       en: 'P2P file transfer over WebRTC. The proxy only discovers peers; files travel directly between devices. Share by QR.',
@@ -157,7 +157,7 @@ const apps: AppEntry[] = [
     name: 'Closer Click Chess',
     url: 'https://chess.closer.click/',
     logo: chessLogo,
-    repo: 'seyacat/simple-websocket-chess',
+    repo: 'closerclick/simple-websocket-chess',
     desc: {
       es: 'Ajedrez online multijugador con transporte P2P por WebRTC cuando es posible. Crea partidas públicas o privadas; el lobby se actualiza en tiempo real con los eventos del proxy.',
       en: 'Online multiplayer chess with P2P transport over WebRTC when possible. Create public or private games; the lobby updates in real time from the proxy events.',
@@ -167,7 +167,7 @@ const apps: AppEntry[] = [
     name: 'Contador Ecuavóley',
     url: 'https://ecuavoley.closer.click/',
     logo: ecuavoleyLogo,
-    repo: 'seyacat/ecuavoley-contador',
+    repo: 'closerclick/ecuavoley-contador',
     desc: {
       es: 'Marcador para partidos de ecuavóley: dos paneles táctiles, indicador de saque, deshacer, cambio y reinicio. Gana el primero en llegar a 15.',
       en: 'Scoreboard for ecuavóley matches: two touch panels, serve indicator, undo, switch and reset. First to reach 15 wins.',
@@ -177,7 +177,7 @@ const apps: AppEntry[] = [
     name: 'Contador Pádel',
     url: 'https://padel.closer.click/',
     logo: padelLogo,
-    repo: 'seyacat/padel-contador',
+    repo: 'closerclick/padel-contador',
     desc: {
       es: 'Marcador para partidos de pádel con puntuación de tenis (0/15/30/40, juegos y sets): dos paneles táctiles, indicador de saque, tie-break, punto de oro opcional, deshacer y reinicio.',
       en: 'Scoreboard for padel matches with tennis scoring (0/15/30/40, games and sets): two touch panels, serve indicator, tie-break, optional golden point, undo and reset.',
@@ -187,7 +187,7 @@ const apps: AppEntry[] = [
     name: 'GymBro Timer',
     url: 'https://gymbro.closer.click/',
     logo: gymbroLogo,
-    repo: 'seyacat/gymbro',
+    repo: 'closerclick/gymbro',
     desc: {
       es: 'Timer por intervalos para el gimnasio: define tu tiempo de entrenamiento y de descanso, una cuenta atrás de preparación y el número de rondas. Avisos sonoros, vibración, notificaciones en segundo plano y pantalla siempre encendida. Funciona sin conexión.',
       en: 'Interval timer for the gym: set your work and rest times, a prep countdown and the number of rounds. Sound cues, vibration, background notifications and always-on screen. Works offline.',
@@ -197,7 +197,7 @@ const apps: AppEntry[] = [
     name: 'GridGame',
     url: 'https://gridgame.closer.click/',
     logo: gridgameLogo,
-    repo: 'seyacat/gridgame',
+    repo: 'closerclick/gridgame',
     desc: {
       es: 'Sandbox multijugador cooperativo en un grid. Mundo subjetivo: cada peer hostea lo que crea y carga el entorno alrededor a medida que se mueve. Ground procedural determinista, props/items/personajes/enemigos programables vía DSL, resolución de conflictos por reputación (web-of-trust de identity) y recencia. Loot no-exclusivo, summon de enemigos por turnos ponderados por reputación.',
       en: 'Cooperative multiplayer sandbox on a grid. Subjective world: each peer hosts what it creates and loads the surrounding environment as it moves. Deterministic procedural ground, props/items/characters/enemies programmable via DSL, conflict resolution by reputation (identity web-of-trust) and recency. Non-exclusive loot, enemy summoning in turns weighted by reputation.',
@@ -207,7 +207,7 @@ const apps: AppEntry[] = [
     name: 'Favicon Generator',
     url: 'https://favicon.closer.click/',
     logo: faviconLogo,
-    repo: 'seyacat/favicon-generator',
+    repo: 'closerclick/favicon-generator',
     desc: {
       es: 'Genera favicons e íconos <code>.ico</code> compatibles con Windows a partir de una imagen PNG/JPG, listos para tu sitio o PWA. Todo en el navegador, sin subir nada a un servidor.',
       en: 'Generate favicons and Windows-compatible <code>.ico</code> icons from a PNG/JPG image, ready for your site or PWA. All in the browser, without uploading anything to a server.',
@@ -390,7 +390,7 @@ onUnmounted(() => {
         <closer-click-support
           class="nav-support"
           href="https://ko-fi.com/closerclick"
-          repo="seyacat/closerclick"
+          repo="closerclick/closerclick"
           discord="https://discord.gg/D648uq7cth"
           :lang="locale"
         ></closer-click-support>

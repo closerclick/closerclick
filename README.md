@@ -23,7 +23,7 @@ El eje del ecosistema **[CloserClick](https://closer.click)** es el **autohosteo
 
 Landing page para el ecosistema **Closer Click**: lista de las apps que usan el proxy y descripción del servicio. Es un PWA instalable (sin caching de service worker — siempre red), Vue 3 + Vite + TypeScript.
 
-🌐 Producción: **https://seyacat.github.io/closerclick/**
+🌐 Producción: **https://closerclick.github.io/closerclick/**
 
 ## Cómo funciona
 
@@ -33,10 +33,10 @@ Landing page para el ecosistema **Closer Click**: lista de las apps que usan el 
 
 ## Apps listadas
 
-- [Closer Click Chat](https://seyacat.github.io/simple-websocket-chat/)
-- [QRShare](https://seyacat.github.io/qrshare/)
-- [Closer Click Chess](https://seyacat.github.io/simple-websocket-chess/)
-- [Contador Ecuavóley](https://seyacat.github.io/ecuavoley-contador/)
+- [Closer Click Chat](https://closerclick.github.io/simple-websocket-chat/)
+- [QRShare](https://closerclick.github.io/qrshare/)
+- [Closer Click Chess](https://closerclick.github.io/simple-websocket-chess/)
+- [Contador Ecuavóley](https://closerclick.github.io/ecuavoley-contador/)
 - [Pronóstico Mundialista](https://mundial.closer.click/)
 
 ## Build
