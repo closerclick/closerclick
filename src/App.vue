@@ -49,6 +49,7 @@ const messages = {
       text: 'Aplicaciones que usan el proxy de Closer Click.',
       open: 'Abrir aplicación',
       fullHome: 'Ver home completo',
+      wipTitle: 'En Desarrollo',
     },
     service: {
       title: 'Servicio',
@@ -89,6 +90,7 @@ const messages = {
       text: 'Applications that use the Closer Click proxy.',
       open: 'Open app',
       fullHome: 'Show full home',
+      wipTitle: 'In Development',
     },
     service: {
       title: 'Service',
@@ -111,7 +113,10 @@ const messages = {
 
 const t = computed(() => messages[locale.value])
 
-type AppEntry = { name: string; repo: string; url: string; logo: string; desc: { es: string; en: string } }
+const stableApps = computed(() => apps.filter((a) => !a.wip))
+const wipApps = computed(() => apps.filter((a) => a.wip))
+
+type AppEntry = { name: string; repo: string; url: string; logo: string; desc: { es: string; en: string }; wip?: boolean }
 const apps: AppEntry[] = [
   {
     name: 'Pronóstico Mundialista',
@@ -198,6 +203,7 @@ const apps: AppEntry[] = [
     url: 'https://gridgame.closer.click/',
     logo: gridgameLogo,
     repo: 'closerclick/gridgame',
+    wip: true,
     desc: {
       es: 'Sandbox multijugador cooperativo en un grid. Mundo subjetivo: cada peer hostea lo que crea y carga el entorno alrededor a medida que se mueve. Ground procedural determinista, props/items/personajes/enemigos programables vía DSL, resolución de conflictos por reputación (web-of-trust de identity) y recencia. Loot no-exclusivo, summon de enemigos por turnos ponderados por reputación.',
       en: 'Cooperative multiplayer sandbox on a grid. Subjective world: each peer hosts what it creates and loads the surrounding environment as it moves. Deterministic procedural ground, props/items/characters/enemies programmable via DSL, conflict resolution by reputation (identity web-of-trust) and recency. Non-exclusive loot, enemy summoning in turns weighted by reputation.',
@@ -429,7 +435,7 @@ onUnmounted(() => {
         <h2 class="section-title">{{ t.apps.title }}</h2>
         <p class="section-text">{{ t.apps.text }}</p>
         <div class="apps-grid">
-          <div class="app-card" v-for="a in apps" :key="a.url">
+          <div class="app-card" v-for="a in stableApps" :key="a.url">
             <a
               :href="a.url"
               target="_blank"
@@ -449,6 +455,31 @@ onUnmounted(() => {
             >github.com/{{ a.repo }}</a>
           </div>
         </div>
+
+        <template v-if="wipApps.length">
+          <h3 class="wip-title">{{ t.apps.wipTitle }}</h3>
+          <div class="apps-grid">
+            <div class="app-card wip" v-for="a in wipApps" :key="a.url">
+              <a
+                :href="a.url"
+                target="_blank"
+                rel="noopener"
+                class="app-logo-link"
+                :aria-label="t.apps.open + ': ' + a.name"
+              >
+                <img class="app-logo" :src="a.logo" :alt="a.name" width="120" height="120" />
+              </a>
+              <h3>{{ a.name }}</h3>
+              <p v-html="a.desc[locale]"></p>
+              <a
+                :href="'https://github.com/' + a.repo"
+                target="_blank"
+                rel="noopener"
+                class="app-repo"
+              >github.com/{{ a.repo }}</a>
+            </div>
+          </div>
+        </template>
 
         <button
           v-if="compact"
@@ -730,6 +761,9 @@ onUnmounted(() => {
 .feature-card p { line-height: 1.6; }
 
 .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 3rem; }
+.wip-title { font-size: 1.6rem; margin-top: 3.5rem; color: #2ecc71; text-align: center; letter-spacing: 0.02em; }
+.app-card.wip { border-color: rgba(46, 204, 113, 0.45); box-shadow: 0 0 0 1px rgba(46, 204, 113, 0.15) inset; }
+.app-card.wip h3 { color: #2ecc71; }
 .app-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); transition: transform 0.3s ease; display: flex; flex-direction: column; align-items: center; text-align: center; }
 .app-card:hover { transform: translateY(-5px); }
 .app-logo-link { display: inline-block; line-height: 0; cursor: pointer; border-radius: 20px; outline: none; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
