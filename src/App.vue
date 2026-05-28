@@ -458,7 +458,7 @@ onUnmounted(() => {
 
         <template v-if="wipApps.length">
           <h3 class="wip-title">{{ t.apps.wipTitle }}</h3>
-          <div class="apps-grid">
+          <div class="apps-grid wip-grid">
             <div class="app-card wip" v-for="a in wipApps" :key="a.url">
               <a
                 :href="a.url"
@@ -762,6 +762,7 @@ onUnmounted(() => {
 
 .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 3rem; }
 .wip-title { font-size: 1.6rem; margin-top: 3.5rem; color: #2ecc71; text-align: center; letter-spacing: 0.02em; }
+.apps-grid.wip-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
 .app-card.wip { border-color: rgba(46, 204, 113, 0.45); box-shadow: 0 0 0 1px rgba(46, 204, 113, 0.15) inset; }
 .app-card.wip h3 { color: #2ecc71; }
 .app-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); transition: transform 0.3s ease; display: flex; flex-direction: column; align-items: center; text-align: center; }
