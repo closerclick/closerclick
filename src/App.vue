@@ -8,6 +8,7 @@ import chessLogo from './assets/apps/chess.svg'
 import ecuavoleyLogo from './assets/apps/ecuavoley.svg'
 import padelLogo from './assets/apps/padel.svg'
 import gridgameLogo from './assets/apps/gridgame.svg'
+import gymbroLogo from './assets/apps/gymbro.svg'
 import faviconLogo from './assets/apps/favicon.svg'
 
 const isScrolled = ref(false)
@@ -180,6 +181,16 @@ const apps: AppEntry[] = [
     desc: {
       es: 'Marcador para partidos de pádel con puntuación de tenis (0/15/30/40, juegos y sets): dos paneles táctiles, indicador de saque, tie-break, punto de oro opcional, deshacer y reinicio.',
       en: 'Scoreboard for padel matches with tennis scoring (0/15/30/40, games and sets): two touch panels, serve indicator, tie-break, optional golden point, undo and reset.',
+    },
+  },
+  {
+    name: 'GymBro Timer',
+    url: 'https://gymbro.closer.click/',
+    logo: gymbroLogo,
+    repo: 'seyacat/gymbro',
+    desc: {
+      es: 'Timer por intervalos para el gimnasio: define tu tiempo de entrenamiento y de descanso, una cuenta atrás de preparación y el número de rondas. Avisos sonoros, vibración, notificaciones en segundo plano y pantalla siempre encendida. Funciona sin conexión.',
+      en: 'Interval timer for the gym: set your work and rest times, a prep countdown and the number of rounds. Sound cues, vibration, background notifications and always-on screen. Works offline.',
     },
   },
   {
