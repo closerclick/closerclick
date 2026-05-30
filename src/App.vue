@@ -53,6 +53,8 @@ const messages = {
       open: 'Abrir aplicación',
       download: 'Descargar APK',
       fullHome: 'Ver home completo',
+      info: 'Ver descripción',
+      close: 'Cerrar',
     },
     service: {
       title: 'Servicio',
@@ -95,6 +97,8 @@ const messages = {
       open: 'Open app',
       download: 'Download APK',
       fullHome: 'Show full home',
+      info: 'View description',
+      close: 'Close',
     },
     service: {
       title: 'Service',
@@ -350,6 +354,14 @@ const installApp = async () => {
   }
 }
 
+const infoApp = ref<AppEntry | null>(null)
+const openInfo = (a: AppEntry) => {
+  infoApp.value = a
+}
+const closeInfo = () => {
+  infoApp.value = null
+}
+
 const showFullHome = () => {
   compact.value = false
   requestAnimationFrame(() => {
@@ -495,6 +507,13 @@ onUnmounted(() => {
             v-for="a in visibleApps"
             :key="a.url"
           >
+            <button
+              v-if="compact"
+              type="button"
+              class="app-info-btn"
+              :aria-label="t.apps.info + ': ' + a.name"
+              @click="openInfo(a)"
+            >i</button>
             <a
               :href="a.url"
               target="_blank"
@@ -506,12 +525,6 @@ onUnmounted(() => {
             </a>
             <h3>{{ a.name }}</h3>
             <p v-html="a.desc[locale]"></p>
-            <a
-              v-if="a.cat === 'android' && a.apk"
-              :href="a.apk"
-              rel="noopener"
-              class="app-download"
-            >⬇ {{ t.apps.download }}</a>
             <a
               :href="'https://github.com/' + a.repo"
               target="_blank"
@@ -578,6 +591,29 @@ onUnmounted(() => {
         <p class="footer-copy">{{ t.footer.copy }}</p>
       </div>
     </footer>
+
+    <div v-if="infoApp" class="info-modal-overlay" @click.self="closeInfo">
+      <div class="info-modal" role="dialog" aria-modal="true">
+        <button
+          type="button"
+          class="info-modal-x"
+          :aria-label="t.apps.close"
+          @click="closeInfo"
+        >×</button>
+        <img class="info-modal-logo" :src="infoApp.logo" :alt="infoApp.name" width="72" height="72" />
+        <h3 class="info-modal-title">{{ infoApp.name }}</h3>
+        <p class="info-modal-desc" v-html="infoApp.desc[locale]"></p>
+        <div class="info-modal-actions">
+          <a
+            :href="infoApp.url"
+            target="_blank"
+            rel="noopener"
+            class="app-button"
+          >{{ infoApp.apk ? t.apps.download : t.apps.open }}</a>
+          <button type="button" class="info-modal-close" @click="closeInfo">{{ t.apps.close }}</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -836,7 +872,7 @@ onUnmounted(() => {
 .apps-grid.wip-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
 .app-card.wip { border-color: rgba(46, 204, 113, 0.45); box-shadow: 0 0 0 1px rgba(46, 204, 113, 0.15) inset; }
 .app-card.wip h3 { color: #2ecc71; }
-.app-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); transition: transform 0.3s ease; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.app-card { position: relative; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); transition: transform 0.3s ease; display: flex; flex-direction: column; align-items: center; text-align: center; }
 .app-card:hover { transform: translateY(-5px); }
 .app-logo-link { display: inline-block; line-height: 0; cursor: pointer; border-radius: 20px; outline: none; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
 .app-logo-link:focus, .app-logo-link:active, .app-logo-link:focus-visible { outline: none; }
@@ -849,8 +885,95 @@ onUnmounted(() => {
 .app-button:hover { background: #2980b9; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4); }
 .app-repo { display: block; margin-top: 0.85rem; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem; text-decoration: none; word-break: break-all; }
 .app-repo:hover { color: #fff; text-decoration: underline; }
-.app-download { display: inline-block; margin-top: 0.85rem; padding: 0.55rem 1.1rem; background: #FF3310; color: #fff; font-weight: 600; font-size: 0.95rem; border-radius: 10px; text-decoration: none; transition: filter 0.15s ease; }
-.app-download:hover { filter: brightness(1.1); }
+
+/* Botón (i) en la esquina de la card (modo compacto) */
+.app-info-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 3;
+}
+.app-info-btn:hover { background: #3498db; color: #fff; border-color: #3498db; }
+
+/* Modal de info de la app */
+.info-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+}
+.info-modal {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: #243140;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  padding: 2rem 1.75rem 1.75rem;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.info-modal-x {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.info-modal-x:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+.info-modal-logo { width: 72px; height: 72px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35); margin-bottom: 1rem; }
+.info-modal-title { font-size: 1.4rem; color: #3498db; margin-bottom: 1rem; }
+.info-modal-desc { line-height: 1.6; margin-bottom: 1.75rem; opacity: 0.95; text-align: left; }
+.info-modal-desc code { background: rgba(0,0,0,0.35); padding: 0.1rem 0.4rem; border-radius: 4px; font-family: 'Consolas','Monaco',monospace; font-size: 0.9em; }
+.info-modal-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
+.info-modal-close {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.info-modal-close:hover { background: rgba(255, 255, 255, 0.1); border-color: #fff; }
 
 .servicio-bg {
   background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)),
