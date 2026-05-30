@@ -31,6 +31,7 @@ const messages = {
   es: {
     htmlLang: 'es',
     nav: { apps: 'Aplicaciones', service: 'Servicio', api: 'API', install: 'Instalar App' },
+    tabs: { apps: 'Apps', deportes: 'Deportes', juegos: 'Juegos', wip: 'En Desarrollo' },
     install: {
       ios: 'Para instalar: pulsa el botón Compartir y luego "Añadir a pantalla de inicio".',
       other: 'Tu navegador todavía no permite la instalación automática. Usa el menú del navegador para instalar la app.',
@@ -72,6 +73,7 @@ const messages = {
   en: {
     htmlLang: 'en',
     nav: { apps: 'Applications', service: 'Service', api: 'API', install: 'Install App' },
+    tabs: { apps: 'Apps', deportes: 'Sports', juegos: 'Games', wip: 'In Development' },
     install: {
       ios: 'To install: tap the Share button and then "Add to Home Screen".',
       other: 'Your browser does not support automatic installation yet. Use the browser menu to install the app.',
@@ -114,16 +116,22 @@ const messages = {
 
 const t = computed(() => messages[locale.value])
 
-const stableApps = computed(() => apps.filter((a) => !a.wip))
-const wipApps = computed(() => apps.filter((a) => a.wip))
+type TabKey = 'apps' | 'deportes' | 'juegos' | 'wip'
+const TAB_ORDER: TabKey[] = ['apps', 'deportes', 'juegos', 'wip']
+const activeTab = ref<TabKey>('apps')
+const tabApps = (tab: TabKey) =>
+  tab === 'wip' ? apps.filter((a) => a.wip) : apps.filter((a) => !a.wip && a.cat === tab)
+const visibleTabs = computed(() => TAB_ORDER.filter((tab) => tabApps(tab).length > 0))
+const visibleApps = computed(() => tabApps(activeTab.value))
 
-type AppEntry = { name: string; repo: string; url: string; logo: string; desc: { es: string; en: string }; wip?: boolean }
+type AppEntry = { name: string; repo: string; url: string; logo: string; cat: 'apps' | 'deportes' | 'juegos'; desc: { es: string; en: string }; wip?: boolean }
 const apps: AppEntry[] = [
   {
     name: 'Pronóstico Mundialista',
     url: 'https://mundial.closer.click/',
     logo: mundialLogo,
     repo: 'closerclick/pronostico-mundialista',
+    cat: 'juegos',
     desc: {
       es: 'Arma tu pronóstico del Mundial 2026 (48 selecciones) en tres modos (simple, gana/pierde o con marcador), compite con tus amigos y lleva tu tabla de aciertos. Se codifica completo en una cadena corta, se firma con tu identidad ECDSA del vault <code>id.closer.click</code> y se comparte por QR.',
       en: 'Build your 2026 World Cup predictions (48 teams) in three modes (simple, win/lose or with scoreline), compete with your friends and track your hit table. It is fully encoded in a short string, signed with your ECDSA identity from the <code>id.closer.click</code> vault and shared by QR.',
@@ -134,6 +142,7 @@ const apps: AppEntry[] = [
     url: 'https://chat.closer.click/',
     logo: chatLogo,
     repo: 'closerclick/simple-websocket-chat',
+    cat: 'apps',
     desc: {
       es: 'Chat en tiempo real con salas públicas, descubrimiento de canales y mensajería P2P por WebRTC con caída automática al proxy WebSocket.',
       en: 'Real-time chat with public rooms, channel discovery and P2P messaging over WebRTC with automatic fallback to the WebSocket proxy.',
@@ -144,6 +153,7 @@ const apps: AppEntry[] = [
     url: 'https://messenger.closer.click/',
     logo: messengerLogo,
     repo: 'closerclick/closerclick_messenger',
+    cat: 'apps',
     desc: {
       es: 'Mensajería 1-a-1 con cifrado E2E (ECDH+AES-GCM), contactos compartidos entre apps del ecosistema, hilos persistidos en <code>store.closer.click</code> (mismos mensajes en web + extensión), mensajes offline (proxy retiene 24 h) y ranking integrado. PWA instalable + extensión Chrome MV3 reusando la PWA via iframe.',
       en: 'One-to-one messaging with E2E encryption (ECDH+AES-GCM), contacts shared across ecosystem apps, threads persisted in <code>store.closer.click</code> (same messages on web + extension), offline messages (proxy holds them for 24 h) and built-in ratings. Installable PWA + Chrome MV3 extension reusing the PWA via iframe.',
@@ -154,6 +164,7 @@ const apps: AppEntry[] = [
     url: 'https://qrshare.closer.click/',
     logo: qrshareLogo,
     repo: 'closerclick/qrshare',
+    cat: 'apps',
     desc: {
       es: 'Transferencia de archivos P2P por WebRTC. El proxy solo descubre los peers; los archivos viajan directamente entre dispositivos. Comparte por QR.',
       en: 'P2P file transfer over WebRTC. The proxy only discovers peers; files travel directly between devices. Share by QR.',
@@ -164,6 +175,7 @@ const apps: AppEntry[] = [
     url: 'https://chess.closer.click/',
     logo: chessLogo,
     repo: 'closerclick/simple-websocket-chess',
+    cat: 'juegos',
     desc: {
       es: 'Ajedrez online multijugador con transporte P2P por WebRTC cuando es posible. Crea partidas públicas o privadas; el lobby se actualiza en tiempo real con los eventos del proxy.',
       en: 'Online multiplayer chess with P2P transport over WebRTC when possible. Create public or private games; the lobby updates in real time from the proxy events.',
@@ -174,6 +186,7 @@ const apps: AppEntry[] = [
     url: 'https://ecuavoley.closer.click/',
     logo: ecuavoleyLogo,
     repo: 'closerclick/ecuavoley-contador',
+    cat: 'deportes',
     desc: {
       es: 'Marcador para partidos de ecuavóley: dos paneles táctiles, indicador de saque, deshacer, cambio y reinicio. Gana el primero en llegar a 15.',
       en: 'Scoreboard for ecuavóley matches: two touch panels, serve indicator, undo, switch and reset. First to reach 15 wins.',
@@ -184,6 +197,7 @@ const apps: AppEntry[] = [
     url: 'https://padel.closer.click/',
     logo: padelLogo,
     repo: 'closerclick/padel-contador',
+    cat: 'deportes',
     desc: {
       es: 'Marcador para partidos de pádel con puntuación de tenis (0/15/30/40, juegos y sets): dos paneles táctiles, indicador de saque, tie-break, punto de oro opcional, deshacer y reinicio.',
       en: 'Scoreboard for padel matches with tennis scoring (0/15/30/40, games and sets): two touch panels, serve indicator, tie-break, optional golden point, undo and reset.',
@@ -194,6 +208,7 @@ const apps: AppEntry[] = [
     url: 'https://gymbro.closer.click/',
     logo: gymbroLogo,
     repo: 'closerclick/gymbro',
+    cat: 'deportes',
     desc: {
       es: 'Timer por intervalos para el gimnasio: define tu tiempo de entrenamiento y de descanso, una cuenta atrás de preparación y el número de rondas. Avisos sonoros, vibración, notificaciones en segundo plano y pantalla siempre encendida. Funciona sin conexión.',
       en: 'Interval timer for the gym: set your work and rest times, a prep countdown and the number of rounds. Sound cues, vibration, background notifications and always-on screen. Works offline.',
@@ -204,6 +219,7 @@ const apps: AppEntry[] = [
     url: 'https://diamonds.closer.click/',
     logo: diamondsLogo,
     repo: 'closerclick/diamonds',
+    cat: 'juegos',
     desc: {
       es: 'Juego casual de combinar diamantes (match-3): intercambia gemas adyacentes para alinear 3 o más del mismo color, encadena combos en cascada con multiplicador y supera tu récord. Avisos sonoros, vibración y funcionamiento sin conexión. PWA instalable; la partida y el récord viven solo en tu navegador.',
       en: 'Casual match-3 game: swap adjacent gems to line up 3 or more of the same color, chain cascading combos with a multiplier and beat your high score. Sound cues, vibration and offline support. Installable PWA; your game and high score live only in your browser.',
@@ -214,6 +230,7 @@ const apps: AppEntry[] = [
     url: 'https://gridgame.closer.click/',
     logo: gridgameLogo,
     repo: 'closerclick/gridgame',
+    cat: 'juegos',
     wip: true,
     desc: {
       es: 'Sandbox multijugador cooperativo en un grid. Mundo subjetivo: cada peer hostea lo que crea y carga el entorno alrededor a medida que se mueve. Ground procedural determinista, props/items/personajes/enemigos programables vía DSL, resolución de conflictos por reputación (web-of-trust de identity) y recencia. Loot no-exclusivo, summon de enemigos por turnos ponderados por reputación.',
@@ -225,6 +242,7 @@ const apps: AppEntry[] = [
     url: 'https://favicon.closer.click/',
     logo: faviconLogo,
     repo: 'closerclick/favicon-generator',
+    cat: 'apps',
     desc: {
       es: 'Genera favicons e íconos <code>.ico</code> compatibles con Windows a partir de una imagen PNG/JPG, listos para tu sitio o PWA. Todo en el navegador, sin subir nada a un servidor.',
       en: 'Generate favicons and Windows-compatible <code>.ico</code> icons from a PNG/JPG image, ready for your site or PWA. All in the browser, without uploading anything to a server.',
@@ -445,8 +463,25 @@ onUnmounted(() => {
       <div class="section-content">
         <h2 class="section-title">{{ t.apps.title }}</h2>
         <p class="section-text">{{ t.apps.text }}</p>
-        <div class="apps-grid">
-          <div class="app-card" v-for="a in stableApps" :key="a.url">
+        <div class="apps-tabs" role="tablist">
+          <button
+            v-for="tab in visibleTabs"
+            :key="tab"
+            type="button"
+            role="tab"
+            :aria-selected="activeTab === tab"
+            :class="['apps-tab', { active: activeTab === tab, wip: tab === 'wip' }]"
+            @click="activeTab = tab"
+          >{{ t.tabs[tab] }}</button>
+        </div>
+
+        <div class="apps-grid" :class="{ 'wip-grid': activeTab === 'wip' }">
+          <div
+            class="app-card"
+            :class="{ wip: a.wip }"
+            v-for="a in visibleApps"
+            :key="a.url"
+          >
             <a
               :href="a.url"
               target="_blank"
@@ -466,31 +501,6 @@ onUnmounted(() => {
             >github.com/{{ a.repo }}</a>
           </div>
         </div>
-
-        <template v-if="wipApps.length">
-          <h3 class="wip-title">{{ t.apps.wipTitle }}</h3>
-          <div class="apps-grid wip-grid">
-            <div class="app-card wip" v-for="a in wipApps" :key="a.url">
-              <a
-                :href="a.url"
-                target="_blank"
-                rel="noopener"
-                class="app-logo-link"
-                :aria-label="t.apps.open + ': ' + a.name"
-              >
-                <img class="app-logo" :src="a.logo" :alt="a.name" width="120" height="120" />
-              </a>
-              <h3>{{ a.name }}</h3>
-              <p v-html="a.desc[locale]"></p>
-              <a
-                :href="'https://github.com/' + a.repo"
-                target="_blank"
-                rel="noopener"
-                class="app-repo"
-              >github.com/{{ a.repo }}</a>
-            </div>
-          </div>
-        </template>
 
         <button
           v-if="compact"
@@ -771,7 +781,39 @@ onUnmounted(() => {
 .feature-card h3 { font-size: 1.5rem; margin-bottom: 1rem; color: #3498db; }
 .feature-card p { line-height: 1.6; }
 
-.apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 3rem; }
+.apps-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 2.5rem;
+}
+.apps-tab {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 0.55rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+.apps-tab:hover { color: #fff; background: rgba(255, 255, 255, 0.14); }
+.apps-tab.active {
+  background: #3498db;
+  border-color: #3498db;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.35);
+}
+.apps-tab.wip.active {
+  background: #2ecc71;
+  border-color: #2ecc71;
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.35);
+}
+
+.apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 2rem; }
 .wip-title { font-size: 1.6rem; margin-top: 3.5rem; color: #2ecc71; text-align: center; letter-spacing: 0.02em; }
 .apps-grid.wip-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
 .app-card.wip { border-color: rgba(46, 204, 113, 0.45); box-shadow: 0 0 0 1px rgba(46, 204, 113, 0.15) inset; }
