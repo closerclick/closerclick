@@ -751,6 +751,8 @@ onUnmounted(() => {
 
 .app { background: #1b2533; }
 .section { min-height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.aplicaciones-section { align-items: flex-start; }
+.aplicaciones-section > .section-content { padding-top: 7rem; }
 .parallax-bg {
   position: absolute;
   top: 0;
