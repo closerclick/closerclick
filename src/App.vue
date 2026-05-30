@@ -783,32 +783,30 @@ onUnmounted(() => {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.6rem;
+  gap: 0.25rem;
   margin-top: 2.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
 }
 .apps-tab {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  padding: 0.55rem 1.5rem;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  padding: 0.7rem 1.6rem;
   font-size: 1rem;
   font-weight: 600;
-  border-radius: 50px;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
   white-space: nowrap;
 }
-.apps-tab:hover { color: #fff; background: rgba(255, 255, 255, 0.14); }
+.apps-tab:hover { color: #fff; background: rgba(255, 255, 255, 0.06); }
 .apps-tab.active {
-  background: #3498db;
-  border-color: #3498db;
   color: #fff;
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.35);
+  border-bottom-color: #3498db;
 }
 .apps-tab.wip.active {
-  background: #2ecc71;
-  border-color: #2ecc71;
-  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.35);
+  border-bottom-color: #2ecc71;
 }
 
 .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 2rem; }
