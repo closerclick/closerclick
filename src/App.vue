@@ -9,6 +9,7 @@ import ecuavoleyLogo from './assets/apps/ecuavoley.svg'
 import padelLogo from './assets/apps/padel.svg'
 import gridgameLogo from './assets/apps/gridgame.svg'
 import gymbroLogo from './assets/apps/gymbro.svg'
+import diamondsLogo from './assets/apps/diamonds.svg'
 import faviconLogo from './assets/apps/favicon.svg'
 
 const isScrolled = ref(false)
@@ -196,6 +197,16 @@ const apps: AppEntry[] = [
     desc: {
       es: 'Timer por intervalos para el gimnasio: define tu tiempo de entrenamiento y de descanso, una cuenta atrás de preparación y el número de rondas. Avisos sonoros, vibración, notificaciones en segundo plano y pantalla siempre encendida. Funciona sin conexión.',
       en: 'Interval timer for the gym: set your work and rest times, a prep countdown and the number of rounds. Sound cues, vibration, background notifications and always-on screen. Works offline.',
+    },
+  },
+  {
+    name: 'Diamonds',
+    url: 'https://diamonds.closer.click/',
+    logo: diamondsLogo,
+    repo: 'closerclick/diamonds',
+    desc: {
+      es: 'Juego casual de combinar diamantes (match-3): intercambia gemas adyacentes para alinear 3 o más del mismo color, encadena combos en cascada con multiplicador y supera tu récord. Avisos sonoros, vibración y funcionamiento sin conexión. PWA instalable; la partida y el récord viven solo en tu navegador.',
+      en: 'Casual match-3 game: swap adjacent gems to line up 3 or more of the same color, chain cascading combos with a multiplier and beat your high score. Sound cues, vibration and offline support. Installable PWA; your game and high score live only in your browser.',
     },
   },
   {
