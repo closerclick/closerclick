@@ -51,7 +51,6 @@ const messages = {
       text: 'Aplicaciones que usan el proxy de Closer Click.',
       open: 'Abrir aplicación',
       fullHome: 'Ver home completo',
-      wipTitle: 'En Desarrollo',
     },
     service: {
       title: 'Servicio',
@@ -93,7 +92,6 @@ const messages = {
       text: 'Applications that use the Closer Click proxy.',
       open: 'Open app',
       fullHome: 'Show full home',
-      wipTitle: 'In Development',
     },
     service: {
       title: 'Service',
@@ -814,7 +812,6 @@ onUnmounted(() => {
 }
 
 .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 2rem; }
-.wip-title { font-size: 1.6rem; margin-top: 3.5rem; color: #2ecc71; text-align: center; letter-spacing: 0.02em; }
 .apps-grid.wip-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
 .app-card.wip { border-color: rgba(46, 204, 113, 0.45); box-shadow: 0 0 0 1px rgba(46, 204, 113, 0.15) inset; }
 .app-card.wip h3 { color: #2ecc71; }
