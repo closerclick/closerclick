@@ -11,6 +11,7 @@ import gridgameLogo from './assets/apps/gridgame.svg'
 import gymbroLogo from './assets/apps/gymbro.svg'
 import diamondsLogo from './assets/apps/diamonds.svg'
 import faviconLogo from './assets/apps/favicon.svg'
+import androidLauncherLogo from './assets/apps/android-launcher.svg'
 
 const isScrolled = ref(false)
 const menuOpen = ref(false)
@@ -31,7 +32,7 @@ const messages = {
   es: {
     htmlLang: 'es',
     nav: { apps: 'Aplicaciones', service: 'Servicio', api: 'API', install: 'Instalar App' },
-    tabs: { apps: 'Apps', deportes: 'Deportes', juegos: 'Juegos', wip: 'En Desarrollo' },
+    tabs: { apps: 'Apps', deportes: 'Deportes', juegos: 'Juegos', android: 'Android', wip: 'En Desarrollo' },
     install: {
       ios: 'Para instalar: pulsa el botón Compartir y luego "Añadir a pantalla de inicio".',
       other: 'Tu navegador todavía no permite la instalación automática. Usa el menú del navegador para instalar la app.',
@@ -50,6 +51,7 @@ const messages = {
       title: 'Aplicaciones',
       text: 'Aplicaciones que usan el proxy de Closer Click.',
       open: 'Abrir aplicación',
+      download: 'Descargar APK',
       fullHome: 'Ver home completo',
     },
     service: {
@@ -72,7 +74,7 @@ const messages = {
   en: {
     htmlLang: 'en',
     nav: { apps: 'Applications', service: 'Service', api: 'API', install: 'Install App' },
-    tabs: { apps: 'Apps', deportes: 'Sports', juegos: 'Games', wip: 'In Development' },
+    tabs: { apps: 'Apps', deportes: 'Sports', juegos: 'Games', android: 'Android', wip: 'In Development' },
     install: {
       ios: 'To install: tap the Share button and then "Add to Home Screen".',
       other: 'Your browser does not support automatic installation yet. Use the browser menu to install the app.',
@@ -91,6 +93,7 @@ const messages = {
       title: 'Applications',
       text: 'Applications that use the Closer Click proxy.',
       open: 'Open app',
+      download: 'Download APK',
       fullHome: 'Show full home',
     },
     service: {
@@ -114,15 +117,15 @@ const messages = {
 
 const t = computed(() => messages[locale.value])
 
-type TabKey = 'apps' | 'deportes' | 'juegos' | 'wip'
-const TAB_ORDER: TabKey[] = ['apps', 'deportes', 'juegos', 'wip']
+type TabKey = 'apps' | 'deportes' | 'juegos' | 'android' | 'wip'
+const TAB_ORDER: TabKey[] = ['apps', 'deportes', 'juegos', 'android', 'wip']
 const activeTab = ref<TabKey>('apps')
 const tabApps = (tab: TabKey) =>
   tab === 'wip' ? apps.filter((a) => a.wip) : apps.filter((a) => !a.wip && a.cat === tab)
 const visibleTabs = computed(() => TAB_ORDER.filter((tab) => tabApps(tab).length > 0))
 const visibleApps = computed(() => tabApps(activeTab.value))
 
-type AppEntry = { name: string; repo: string; url: string; logo: string; cat: 'apps' | 'deportes' | 'juegos'; desc: { es: string; en: string }; wip?: boolean }
+type AppEntry = { name: string; repo: string; url: string; logo: string; cat: 'apps' | 'deportes' | 'juegos' | 'android'; desc: { es: string; en: string }; wip?: boolean; apk?: string }
 const apps: AppEntry[] = [
   {
     name: 'Pronóstico Mundialista',
@@ -244,6 +247,18 @@ const apps: AppEntry[] = [
     desc: {
       es: 'Genera favicons e íconos <code>.ico</code> compatibles con Windows a partir de una imagen PNG/JPG, listos para tu sitio o PWA. Todo en el navegador, sin subir nada a un servidor.',
       en: 'Generate favicons and Windows-compatible <code>.ico</code> icons from a PNG/JPG image, ready for your site or PWA. All in the browser, without uploading anything to a server.',
+    },
+  },
+  {
+    name: 'Android Launcher',
+    url: 'https://github.com/closerclick/android-launcher/releases/latest/download/android-launcher.apk',
+    apk: 'https://github.com/closerclick/android-launcher/releases/latest/download/android-launcher.apk',
+    logo: androidLauncherLogo,
+    repo: 'closerclick/android-launcher',
+    cat: 'android',
+    desc: {
+      es: 'Launcher de Android nativo: carrusel de apps paginado por letra con índice lateral, recientes y dock. Permite <strong>ocultar apps</strong> detrás de tu huella o patrón, con un atajo camuflado. APK firmado, instalable por sideload (Android 8+).',
+      en: 'Native Android launcher: app carousel paginated by letter with a side index, recents and dock. Lets you <strong>hide apps</strong> behind your fingerprint or pattern, via a disguised shortcut. Signed APK, sideload-installable (Android 8+).',
     },
   },
 ]
@@ -491,6 +506,12 @@ onUnmounted(() => {
             </a>
             <h3>{{ a.name }}</h3>
             <p v-html="a.desc[locale]"></p>
+            <a
+              v-if="a.cat === 'android' && a.apk"
+              :href="a.apk"
+              rel="noopener"
+              class="app-download"
+            >⬇ {{ t.apps.download }}</a>
             <a
               :href="'https://github.com/' + a.repo"
               target="_blank"
@@ -828,6 +849,8 @@ onUnmounted(() => {
 .app-button:hover { background: #2980b9; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4); }
 .app-repo { display: block; margin-top: 0.85rem; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem; text-decoration: none; word-break: break-all; }
 .app-repo:hover { color: #fff; text-decoration: underline; }
+.app-download { display: inline-block; margin-top: 0.85rem; padding: 0.55rem 1.1rem; background: #FF3310; color: #fff; font-weight: 600; font-size: 0.95rem; border-radius: 10px; text-decoration: none; transition: filter 0.15s ease; }
+.app-download:hover { filter: brightness(1.1); }
 
 .servicio-bg {
   background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)),
