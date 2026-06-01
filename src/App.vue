@@ -33,7 +33,7 @@ const messages = {
   es: {
     htmlLang: 'es',
     nav: { apps: 'Aplicaciones', service: 'Servicio', api: 'API', install: 'Instalar App' },
-    tabs: { apps: 'Apps', deportes: 'Deportes', juegos: 'Juegos', android: 'Android', wip: 'En Desarrollo' },
+    tabs: { todas: 'Todas', apps: 'Apps', deportes: 'Deportes', juegos: 'Juegos', android: 'Android', wip: 'En Desarrollo' },
     subtabs: { solo: 'Un jugador', multi: 'Multijugador', config: 'Configurables' },
     install: {
       ios: 'Para instalar: pulsa el botón Compartir y luego "Añadir a pantalla de inicio".',
@@ -78,7 +78,7 @@ const messages = {
   en: {
     htmlLang: 'en',
     nav: { apps: 'Applications', service: 'Service', api: 'API', install: 'Install App' },
-    tabs: { apps: 'Apps', deportes: 'Sports', juegos: 'Games', android: 'Android', wip: 'In Development' },
+    tabs: { todas: 'All', apps: 'Apps', deportes: 'Sports', juegos: 'Games', android: 'Android', wip: 'In Development' },
     subtabs: { solo: 'Single player', multi: 'Multiplayer', config: 'Configurable' },
     install: {
       ios: 'To install: tap the Share button and then "Add to Home Screen".',
@@ -124,11 +124,15 @@ const messages = {
 
 const t = computed(() => messages[locale.value])
 
-type TabKey = 'apps' | 'deportes' | 'juegos' | 'android' | 'wip'
-const TAB_ORDER: TabKey[] = ['apps', 'deportes', 'juegos', 'android', 'wip']
-const activeTab = ref<TabKey>('apps')
+type TabKey = 'todas' | 'apps' | 'deportes' | 'juegos' | 'android' | 'wip'
+const TAB_ORDER: TabKey[] = ['todas', 'apps', 'deportes', 'juegos', 'android', 'wip']
+const activeTab = ref<TabKey>('todas')
 const tabApps = (tab: TabKey) =>
-  tab === 'wip' ? apps.filter((a) => a.wip) : apps.filter((a) => !a.wip && a.cat === tab)
+  tab === 'wip'
+    ? apps.filter((a) => a.wip)
+    : tab === 'todas'
+      ? apps.filter((a) => !a.wip)
+      : apps.filter((a) => !a.wip && a.cat === tab)
 const visibleTabs = computed(() => TAB_ORDER.filter((tab) => tabApps(tab).length > 0))
 
 // Subcategorías del tab "Juegos": solo / multijugador / configurables
