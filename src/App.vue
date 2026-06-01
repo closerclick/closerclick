@@ -12,6 +12,7 @@ import gymbroLogo from './assets/apps/gymbro.svg'
 import diamondsLogo from './assets/apps/diamonds.svg'
 import faviconLogo from './assets/apps/favicon.svg'
 import androidLauncherLogo from './assets/apps/android-launcher.svg'
+import triviaLogo from './assets/apps/trivia.svg'
 
 const isScrolled = ref(false)
 const menuOpen = ref(false)
@@ -228,6 +229,17 @@ const apps: AppEntry[] = [
     desc: {
       es: 'Juego casual de combinar diamantes (match-3): intercambia gemas adyacentes para alinear 3 o más del mismo color, encadena combos en cascada con multiplicador y supera tu récord. Avisos sonoros, vibración y funcionamiento sin conexión. PWA instalable; la partida y el récord viven solo en tu navegador.',
       en: 'Casual match-3 game: swap adjacent gems to line up 3 or more of the same color, chain cascading combos with a multiplier and beat your high score. Sound cues, vibration and offline support. Installable PWA; your game and high score live only in your browser.',
+    },
+  },
+  {
+    name: 'Trivia',
+    url: 'https://trivia.closer.click/',
+    logo: triviaLogo,
+    repo: 'closerclick/trivia',
+    cat: 'juegos',
+    desc: {
+      es: 'Trivia configurable: pegá tu <code>JSON</code> de preguntas (o generalo con IA desde un prompt listo para copiar), elegí un color del que se deriva toda la paleta, modo claro/oscuro, tu logo y fondos para móvil y web. Modos quiz con puntaje, verdadero/falso y flashcards; elegís cuántas preguntas mostrar y publicás un enlace limpio para jugar. PWA instalable; tus trivias viven en tu navegador.',
+      en: 'Configurable trivia: paste your <code>JSON</code> of questions (or generate it with AI from a ready-to-copy prompt), pick one color that derives the whole palette, light/dark mode, your logo and backgrounds for mobile and web. Quiz (scored), true/false and flashcard modes; choose how many questions to show and publish a clean link to play. Installable PWA; your trivias live in your browser.',
     },
   },
   {
