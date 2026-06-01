@@ -34,6 +34,7 @@ const messages = {
     htmlLang: 'es',
     nav: { apps: 'Aplicaciones', service: 'Servicio', api: 'API', install: 'Instalar App' },
     tabs: { apps: 'Apps', deportes: 'Deportes', juegos: 'Juegos', android: 'Android', wip: 'En Desarrollo' },
+    subtabs: { solo: 'Un jugador', multi: 'Multijugador', config: 'Configurables' },
     install: {
       ios: 'Para instalar: pulsa el botón Compartir y luego "Añadir a pantalla de inicio".',
       other: 'Tu navegador todavía no permite la instalación automática. Usa el menú del navegador para instalar la app.',
@@ -78,6 +79,7 @@ const messages = {
     htmlLang: 'en',
     nav: { apps: 'Applications', service: 'Service', api: 'API', install: 'Install App' },
     tabs: { apps: 'Apps', deportes: 'Sports', juegos: 'Games', android: 'Android', wip: 'In Development' },
+    subtabs: { solo: 'Single player', multi: 'Multiplayer', config: 'Configurable' },
     install: {
       ios: 'To install: tap the Share button and then "Add to Home Screen".',
       other: 'Your browser does not support automatic installation yet. Use the browser menu to install the app.',
@@ -128,9 +130,27 @@ const activeTab = ref<TabKey>('apps')
 const tabApps = (tab: TabKey) =>
   tab === 'wip' ? apps.filter((a) => a.wip) : apps.filter((a) => !a.wip && a.cat === tab)
 const visibleTabs = computed(() => TAB_ORDER.filter((tab) => tabApps(tab).length > 0))
-const visibleApps = computed(() => tabApps(activeTab.value))
 
-type AppEntry = { name: string; repo: string; url: string; logo: string; cat: 'apps' | 'deportes' | 'juegos' | 'android'; desc: { es: string; en: string }; wip?: boolean; apk?: string }
+// Subcategorías del tab "Juegos": solo / multijugador / configurables
+type SubKey = 'solo' | 'multi' | 'config'
+const SUB_ORDER: SubKey[] = ['solo', 'multi', 'config']
+const activeSub = ref<SubKey>('solo')
+const subApps = (sub: SubKey) => tabApps('juegos').filter((a) => (a.sub ?? 'solo') === sub)
+const visibleSubs = computed(() => SUB_ORDER.filter((sub) => subApps(sub).length > 0))
+
+const visibleApps = computed(() => {
+  if (activeTab.value !== 'juegos') return tabApps(activeTab.value)
+  return subApps(activeSub.value)
+})
+
+// Al entrar al tab Juegos, asegurar una subcategoría visible seleccionada
+watch(activeTab, (tab) => {
+  if (tab === 'juegos' && !visibleSubs.value.includes(activeSub.value)) {
+    activeSub.value = visibleSubs.value[0] ?? 'solo'
+  }
+})
+
+type AppEntry = { name: string; repo: string; url: string; logo: string; cat: 'apps' | 'deportes' | 'juegos' | 'android'; sub?: SubKey; desc: { es: string; en: string }; wip?: boolean; apk?: string }
 const apps: AppEntry[] = [
   {
     name: 'Pronóstico Mundialista',
@@ -138,6 +158,7 @@ const apps: AppEntry[] = [
     logo: mundialLogo,
     repo: 'closerclick/pronostico-mundialista',
     cat: 'juegos',
+    sub: 'multi',
     desc: {
       es: 'Arma tu pronóstico del Mundial 2026 (48 selecciones) en tres modos (simple, gana/pierde o con marcador), compite con tus amigos y lleva tu tabla de aciertos. Se codifica completo en una cadena corta, se firma con tu identidad ECDSA del vault <code>id.closer.click</code> y se comparte por QR.',
       en: 'Build your 2026 World Cup predictions (48 teams) in three modes (simple, win/lose or with scoreline), compete with your friends and track your hit table. It is fully encoded in a short string, signed with your ECDSA identity from the <code>id.closer.click</code> vault and shared by QR.',
@@ -182,6 +203,7 @@ const apps: AppEntry[] = [
     logo: chessLogo,
     repo: 'closerclick/simple-websocket-chess',
     cat: 'juegos',
+    sub: 'multi',
     desc: {
       es: 'Ajedrez online multijugador con transporte P2P por WebRTC cuando es posible. Crea partidas públicas o privadas; el lobby se actualiza en tiempo real con los eventos del proxy.',
       en: 'Online multiplayer chess with P2P transport over WebRTC when possible. Create public or private games; the lobby updates in real time from the proxy events.',
@@ -226,6 +248,7 @@ const apps: AppEntry[] = [
     logo: diamondsLogo,
     repo: 'closerclick/diamonds',
     cat: 'juegos',
+    sub: 'solo',
     desc: {
       es: 'Juego casual de combinar diamantes (match-3): intercambia gemas adyacentes para alinear 3 o más del mismo color, encadena combos en cascada con multiplicador y supera tu récord. Avisos sonoros, vibración y funcionamiento sin conexión. PWA instalable; la partida y el récord viven solo en tu navegador.',
       en: 'Casual match-3 game: swap adjacent gems to line up 3 or more of the same color, chain cascading combos with a multiplier and beat your high score. Sound cues, vibration and offline support. Installable PWA; your game and high score live only in your browser.',
@@ -237,6 +260,7 @@ const apps: AppEntry[] = [
     logo: triviaLogo,
     repo: 'closerclick/trivia',
     cat: 'juegos',
+    sub: 'config',
     desc: {
       es: 'Trivia configurable: pegá tu <code>JSON</code> de preguntas (o generalo con IA desde un prompt listo para copiar), elegí un color del que se deriva toda la paleta, modo claro/oscuro, tu logo y fondos para móvil y web. Modos quiz con puntaje, verdadero/falso y flashcards; elegís cuántas preguntas mostrar y publicás un enlace limpio para jugar. PWA instalable; tus trivias viven en tu navegador.',
       en: 'Configurable trivia: paste your <code>JSON</code> of questions (or generate it with AI from a ready-to-copy prompt), pick one color that derives the whole palette, light/dark mode, your logo and backgrounds for mobile and web. Quiz (scored), true/false and flashcard modes; choose how many questions to show and publish a clean link to play. Installable PWA; your trivias live in your browser.',
@@ -248,6 +272,7 @@ const apps: AppEntry[] = [
     logo: gridgameLogo,
     repo: 'closerclick/gridgame',
     cat: 'juegos',
+    sub: 'multi',
     wip: true,
     desc: {
       es: 'Sandbox multijugador cooperativo en un grid. Mundo subjetivo: cada peer hostea lo que crea y carga el entorno alrededor a medida que se mueve. Ground procedural determinista, props/items/personajes/enemigos programables vía DSL, resolución de conflictos por reputación (web-of-trust de identity) y recencia. Loot no-exclusivo, summon de enemigos por turnos ponderados por reputación.',
@@ -510,6 +535,22 @@ onUnmounted(() => {
             :class="['apps-tab', { active: activeTab === tab, wip: tab === 'wip' }]"
             @click="activeTab = tab"
           >{{ t.tabs[tab] }}</button>
+        </div>
+
+        <div
+          v-if="activeTab === 'juegos' && visibleSubs.length > 1"
+          class="apps-subtabs"
+          role="tablist"
+        >
+          <button
+            v-for="sub in visibleSubs"
+            :key="sub"
+            type="button"
+            role="tab"
+            :aria-selected="activeSub === sub"
+            :class="['apps-subtab', { active: activeSub === sub }]"
+            @click="activeSub = sub"
+          >{{ t.subtabs[sub] }}</button>
         </div>
 
         <div class="apps-grid" :class="{ 'wip-grid': activeTab === 'wip' }">
@@ -878,6 +919,32 @@ onUnmounted(() => {
 }
 .apps-tab.wip.active {
   border-bottom-color: #2ecc71;
+}
+
+.apps-subtabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+.apps-subtab {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50px;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  white-space: nowrap;
+}
+.apps-subtab:hover { color: #fff; background: rgba(255, 255, 255, 0.12); }
+.apps-subtab.active {
+  color: #fff;
+  background: #3498db;
+  border-color: #3498db;
 }
 
 .apps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 2rem; }
