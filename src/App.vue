@@ -13,6 +13,7 @@ import diamondsLogo from './assets/apps/diamonds.svg'
 import faviconLogo from './assets/apps/favicon.svg'
 import androidLauncherLogo from './assets/apps/android-launcher.svg'
 import triviaLogo from './assets/apps/trivia.svg'
+import truequeLogo from './assets/apps/trueque.svg'
 
 const isScrolled = ref(false)
 const menuOpen = ref(false)
@@ -191,6 +192,17 @@ const apps: AppEntry[] = [
     },
   },
   {
+    name: 'Trueque',
+    url: 'https://trueque.closer.click/',
+    logo: truequeLogo,
+    repo: 'closerclick/trueque',
+    cat: 'apps',
+    desc: {
+      es: 'Anuncios georreferenciados <strong>efímeros</strong> (vendo / regalo / busco) cerca tuyo. Publicás un pin firmado con tu identidad del vault que vive máx 24 h (sin historial), descubrís por radio con un <strong>radar de proximidad</strong> sin mapas de terceros, y cerrás el trato por el messenger (contacto vía proxy). Estrena el pilar de descubrimiento geo <code>geo.closer.click</code>: tu ubicación no se guarda.',
+      en: 'Georeferenced <strong>ephemeral</strong> listings (sell / give away / looking for) near you. Publish a pin signed with your vault identity that lives up to 24 h (no history), discover by radius with a <strong>proximity radar</strong> with no third-party maps, and close the deal over the messenger (contact via proxy). Debuts the geo discovery pillar <code>geo.closer.click</code>: your location is never stored.',
+    },
+  },
+  {
     name: 'QRShare',
     url: 'https://qrshare.closer.click/',
     logo: qrshareLogo,
@@ -318,6 +330,7 @@ const serviceItems = computed(() =>
         { h: 'WebRTC with proxy fallback', p: 'The client tries to open an <code>RTCDataChannel</code> with each peer (signaling through the proxy itself, public STUN). If negotiation succeeds messages travel P2P; if it fails, they keep flowing through the proxy transparently.' },
         { h: '24 h offline queue + multi-instance', p: 'After a signed <code>identify</code>, clients can address messages by <code>to_publickey</code>. If several instances are online (web + extension + second tab…) the proxy does a <strong>fan-out</strong> to all of them. If they are all offline, it holds them in memory for up to 24 h (200 msgs / 1 MB per pubkey) and delivers on the first reconnect.' },
         { h: 'Shared vaults', p: 'Two static subdomains keep user state in their own <code>localStorage</code> and are accessed by all apps via iframe + <code>postMessage</code>: <code>id.closer.click</code> (keys, contacts, ratings) and <code>store.closer.click</code> (DM threads). Same contacts and same messages in any ecosystem app within the same browser.' },
+        { h: 'Ephemeral geo discovery', p: 'A fourth pillar, <code>geo.closer.click</code>, lets an identity publish a signed georeferenced pin (lat/lng + payload) queryable by radius (PostGIS). Pure discovery: the pin carries the pubkey to contact the identity through the proxy, where the transaction happens. Ephemeral by design — one pin per identity (overwrite, no history), max 24 h TTL matching the offline window. No location trails are stored.' },
       ]
     : [
         { h: 'Tokens efímeros', p: 'Al conectar se asigna un token corto (4 caracteres). Sirve como dirección lógica del cliente y se libera al desconectar.' },
@@ -327,6 +340,7 @@ const serviceItems = computed(() =>
         { h: 'WebRTC con fallback al proxy', p: 'El cliente intenta abrir un <code>RTCDataChannel</code> con cada peer (señalización por el propio proxy, STUN público). Si la negociación tiene éxito los mensajes viajan P2P; si falla, siguen por el proxy de forma transparente.' },
         { h: 'Cola offline 24 h + multi-instancia', p: 'Tras un <code>identify</code> firmado, los clientes pueden direccionar mensajes por <code>to_publickey</code>. Si hay varias instancias online (web + extensión + segunda pestaña…) el proxy hace <strong>fan-out</strong> a todas. Si todas están offline, retiene en memoria hasta 24 h (200 msgs / 1 MB por pubkey) y entrega al primer reconnect.' },
         { h: 'Vaults compartidos', p: 'Dos subdominios estáticos guardan estado del usuario en su propio <code>localStorage</code> y son accedidos por todas las apps vía iframe + <code>postMessage</code>: <code>id.closer.click</code> (claves, contactos, ratings) y <code>store.closer.click</code> (hilos de DMs). Mismos contactos y mismos mensajes en cualquier app del ecosistema dentro del mismo navegador.' },
+        { h: 'Descubrimiento geo efímero', p: 'Un cuarto pilar, <code>geo.closer.click</code>, permite que una identidad publique un pin georreferenciado firmado (lat/lng + payload) consultable por radio (PostGIS). Puro descubrimiento: el pin lleva el pubkey para contactar a la identidad por el proxy, donde ocurre la transacción. Efímero por diseño — un pin por identidad (overwrite, sin historial), TTL máx 24 h igual que la ventana offline. No se guardan rastros de ubicación.' },
       ]
 )
 
