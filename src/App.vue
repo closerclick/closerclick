@@ -14,6 +14,7 @@ import faviconLogo from './assets/apps/favicon.svg'
 import androidLauncherLogo from './assets/apps/android-launcher.svg'
 import triviaLogo from './assets/apps/trivia.svg'
 import truequeLogo from './assets/apps/trueque.svg'
+import ecoLogo from './assets/apps/eco.svg'
 
 const isScrolled = ref(false)
 const menuOpen = ref(false)
@@ -236,6 +237,17 @@ const apps: AppEntry[] = [
     desc: {
       es: 'Anuncios georreferenciados <strong>efímeros</strong> (vendo / regalo / busco) cerca tuyo. Publicás un pin firmado con tu identidad del vault que vive máx 24 h (sin historial), descubrís por radio con un <strong>radar de proximidad</strong> sin mapas de terceros, y cerrás el trato por el messenger (contacto vía proxy). Estrena el pilar de descubrimiento geo <code>geo.closer.click</code>: tu ubicación no se guarda.',
       en: 'Georeferenced <strong>ephemeral</strong> listings (sell / give away / looking for) near you. Publish a pin signed with your vault identity that lives up to 24 h (no history), discover by radius with a <strong>proximity radar</strong> with no third-party maps, and close the deal over the messenger (contact via proxy). Debuts the geo discovery pillar <code>geo.closer.click</code>: your location is never stored.',
+    },
+  },
+  {
+    name: 'Eco',
+    url: 'https://eco.closer.click/',
+    logo: ecoLogo,
+    repo: 'closerclick/eco',
+    cat: 'apps',
+    desc: {
+      es: 'Microblogging <strong>efímero y georreferenciado</strong>: publicás un eco (texto + enlaces + tags) con tu ubicación, quien lo tenga en su <strong>radio de escucha</strong> lo descubre por <code>geo.closer.click</code>, lo recibe y lo <strong>archiva localmente</strong>. A las <strong>24 h muere en la red</strong> y nunca se re-emite (solo sobrevive tu copia local); reps y replies <strong>rehidratan</strong> el original. El orden del feed (recencia · afinidad · reputación · tags · geo) se calcula <strong>100 % en tu cliente</strong>. Tu voz, en tu radio, bajo tus reglas.',
+      en: 'Ephemeral, <strong>georeferenced microblogging</strong>: post an eco (text + links + tags) with your location; whoever has it in their <strong>listening radius</strong> discovers it via <code>geo.closer.click</code>, receives it and <strong>archives it locally</strong>. After <strong>24 h it dies on the network</strong> and is never re-broadcast (only your local copy survives); reposts and replies <strong>rehydrate</strong> the original. Feed order (recency · affinity · reputation · tags · geo) is computed <strong>100% on your client</strong>. Your voice, in your radius, under your rules.',
     },
   },
   {
