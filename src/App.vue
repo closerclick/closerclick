@@ -33,7 +33,7 @@ const locale = ref<Locale>(detectLocale())
 const messages = {
   es: {
     htmlLang: 'es',
-    nav: { apps: 'Aplicaciones', service: 'Servicio', api: 'API', install: 'Instalar App' },
+    nav: { apps: 'Aplicaciones', service: 'Servicio', api: 'API', community: 'Sumá un nodo', install: 'Instalar App' },
     tabs: { todas: 'Todas', apps: 'Apps', deportes: 'Deportes', juegos: 'Juegos', android: 'Android', wip: 'En Desarrollo' },
     subtabs: { solo: 'Un jugador', multi: 'Multijugador', config: 'Configurables' },
     install: {
@@ -67,6 +67,24 @@ const messages = {
       title: 'API',
       text: 'Una sola conexión WebSocket. Mensajes JSON. Sin endpoints HTTP, sin SDK obligatorio.',
     },
+    community: {
+      title: 'Sumá tu nodo',
+      intro: 'El ecosistema lo sostiene una red de nodos que cualquiera puede correr. Los servicios son livianos y vienen dockerizados, con imágenes en GHCR (multi-arch, también para Raspberry Pi).',
+      services: [
+        { name: 'proxy', desc: 'transporte federado', img: 'ghcr.io/closerclick/simple-websocket-proxy' },
+        { name: 'geo', desc: 'descubrimiento georreferenciado', img: 'ghcr.io/closerclick/closer-click-geo' },
+        { name: 'reputation', desc: 'reputación firmada', img: 'ghcr.io/closerclick/closer-click-reputation' },
+      ],
+      cmd: 'docker compose up -d',
+      cmdNote: 'Baja la imagen y arranca con TLS automático (Caddy).',
+      steps: [
+        'Levantá el nodo con un comando.',
+        'Federá: cruzá PROXY_PEERS con otros nodos (solo el proxy).',
+        'Anunciate: agregá tu nodo a nodes.json (un PR) y los clientes lo descubren solos.',
+      ],
+      note: 'DNS directo (sin nube naranja) y diversificá proveedor/región — eso hace la descentralización real.',
+      cta: 'Cómo colaborar',
+    },
     footer: {
       title: 'La filosofía Closer Click',
       what: { h: 'Qué comparto', p: 'Solo la información que decido exponer, nada más.' },
@@ -78,7 +96,7 @@ const messages = {
   },
   en: {
     htmlLang: 'en',
-    nav: { apps: 'Applications', service: 'Service', api: 'API', install: 'Install App' },
+    nav: { apps: 'Applications', service: 'Service', api: 'API', community: 'Run a node', install: 'Install App' },
     tabs: { todas: 'All', apps: 'Apps', deportes: 'Sports', juegos: 'Games', android: 'Android', wip: 'In Development' },
     subtabs: { solo: 'Single player', multi: 'Multiplayer', config: 'Configurable' },
     install: {
@@ -111,6 +129,24 @@ const messages = {
     api: {
       title: 'API',
       text: 'A single WebSocket connection. JSON messages. No HTTP endpoints, no mandatory SDK.',
+    },
+    community: {
+      title: 'Run a node',
+      intro: 'The ecosystem runs on a network of nodes anyone can host. The services are lightweight and shipped as Docker images on GHCR (multi-arch, Raspberry Pi included).',
+      services: [
+        { name: 'proxy', desc: 'federated transport', img: 'ghcr.io/closerclick/simple-websocket-proxy' },
+        { name: 'geo', desc: 'georeferenced discovery', img: 'ghcr.io/closerclick/closer-click-geo' },
+        { name: 'reputation', desc: 'signed reputation', img: 'ghcr.io/closerclick/closer-click-reputation' },
+      ],
+      cmd: 'docker compose up -d',
+      cmdNote: 'Pulls the image and starts with automatic TLS (Caddy).',
+      steps: [
+        'Bring up the node with one command.',
+        'Federate: cross PROXY_PEERS with other nodes (proxy only).',
+        'Announce it: add your node to nodes.json (a PR) and clients discover it on their own.',
+      ],
+      note: 'Direct DNS (no orange cloud) and diversify provider/region — that makes decentralization real.',
+      cta: 'How to contribute',
     },
     footer: {
       title: 'The Closer Click philosophy',
@@ -489,6 +525,7 @@ onUnmounted(() => {
           <a @click="scrollToSection('aplicaciones')" class="nav-link">{{ t.nav.apps }}</a>
           <a @click="scrollToSection('servicio')" class="nav-link">{{ t.nav.service }}</a>
           <a @click="scrollToSection('api')" class="nav-link">{{ t.nav.api }}</a>
+          <a @click="scrollToSection('comunidad')" class="nav-link">{{ t.nav.community }}</a>
         </div>
 
         <button
@@ -515,6 +552,7 @@ onUnmounted(() => {
         <a @click="scrollToSection('aplicaciones')" class="nav-link">{{ t.nav.apps }}</a>
         <a @click="scrollToSection('servicio')" class="nav-link">{{ t.nav.service }}</a>
         <a @click="scrollToSection('api')" class="nav-link">{{ t.nav.api }}</a>
+        <a @click="scrollToSection('comunidad')" class="nav-link">{{ t.nav.community }}</a>
       </div>
     </nav>
 
@@ -638,6 +676,41 @@ onUnmounted(() => {
             <p v-html="item.p"></p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section v-if="!compact" id="comunidad" class="section comunidad-section">
+      <div class="section-content">
+        <h2 class="section-title">{{ t.community.title }}</h2>
+        <p class="section-text">{{ t.community.intro }}</p>
+        <div class="community-services">
+          <a
+            v-for="(s, i) in t.community.services"
+            :key="i"
+            class="community-service"
+            :href="`https://github.com/closerclick/${s.img.split('/').pop()}`"
+            target="_blank"
+            rel="noopener"
+          >
+            <h3>{{ s.name }}</h3>
+            <p>{{ s.desc }}</p>
+            <code>{{ s.img }}</code>
+          </a>
+        </div>
+        <div class="community-quickstart">
+          <code>{{ t.community.cmd }}</code>
+          <span>{{ t.community.cmdNote }}</span>
+        </div>
+        <ol class="community-steps">
+          <li v-for="(step, i) in t.community.steps" :key="i">{{ step }}</li>
+        </ol>
+        <p class="community-note">{{ t.community.note }}</p>
+        <a
+          class="community-cta"
+          href="https://github.com/closerclick/closerclick#colaborá-sumá-tu-nodo-autohosteo"
+          target="_blank"
+          rel="noopener"
+        >{{ t.community.cta }}</a>
       </div>
     </section>
 
@@ -1095,6 +1168,22 @@ onUnmounted(() => {
 .api-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 3rem; }
 .api-item { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.2); }
 .api-item h3 { color: #e74c3c; margin-bottom: 1rem; font-size: 1.3rem; }
+
+.comunidad-section { background: linear-gradient(135deg, #1a2733 0%, #16222b 100%); }
+.community-services { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2.5rem 0; }
+.community-service { display: block; text-decoration: none; color: white; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15); transition: transform 0.2s ease, border-color 0.2s ease; }
+.community-service:hover { transform: translateY(-4px); border-color: #3498db; }
+.community-service h3 { color: #3498db; font-size: 1.3rem; margin-bottom: 0.4rem; }
+.community-service p { opacity: 0.85; margin-bottom: 0.9rem; }
+.community-service code { display: inline-block; background: rgba(0,0,0,0.4); padding: 0.3rem 0.5rem; border-radius: 6px; font-family: 'Consolas','Monaco',monospace; font-size: 0.78rem; word-break: break-all; }
+.community-quickstart { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; margin: 1.5rem 0; }
+.community-quickstart code { background: rgba(0,0,0,0.45); padding: 0.6rem 1.2rem; border-radius: 8px; font-family: 'Consolas','Monaco',monospace; font-size: 1rem; color: #2ecc71; }
+.community-quickstart span { opacity: 0.8; font-size: 0.95rem; }
+.community-steps { max-width: 640px; margin: 1.5rem auto; text-align: left; line-height: 1.7; padding-left: 1.4rem; }
+.community-steps li { margin-bottom: 0.6rem; }
+.community-note { opacity: 0.85; font-style: italic; margin: 1.5rem auto; max-width: 640px; }
+.community-cta { display: inline-block; margin-top: 1rem; background: #3498db; color: white; text-decoration: none; padding: 0.8rem 2rem; border-radius: 30px; font-weight: 600; transition: background 0.2s ease; }
+.community-cta:hover { background: #2980b9; }
 
 .footer { background: #2c3e50; color: white; text-align: center; padding: 3rem 2rem 2rem; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 5%, #000 100%); mask-image: linear-gradient(to bottom, transparent 0%, #000 5%, #000 100%); }
 .footer-content { max-width: 1000px; margin: 0 auto; }

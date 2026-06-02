@@ -21,6 +21,47 @@ El eje del ecosistema **[CloserClick](https://closer.click)** es el **autohosteo
 
 ---
 
+## Colaborá: sumá tu nodo (autohosteo)
+
+El ecosistema se sostiene en una **red de nodos** que cualquiera puede correr. Los
+servicios son **livianos** y vienen **dockerizados turnkey**, con imágenes en
+**GHCR** (multi-arch, también para Raspberry Pi):
+
+| Servicio | Qué es | Imagen | Repo |
+|----------|--------|--------|------|
+| **proxy** | transporte (mensajería, canales, WebRTC, federado) | `ghcr.io/closerclick/simple-websocket-proxy` | [simple-websocket-proxy](https://github.com/closerclick/simple-websocket-proxy) |
+| **geo** | descubrimiento georreferenciado (PostGIS, federado) | `ghcr.io/closerclick/closer-click-geo` | [closer-click-geo](https://github.com/closerclick/closer-click-geo) |
+| **reputation** | registro de reputación (atestaciones firmadas) | `ghcr.io/closerclick/closer-click-reputation` | [closer-click-reputation](https://github.com/closerclick/closer-click-reputation) |
+
+### Levantar un nodo (1 comando)
+
+```bash
+git clone https://github.com/closerclick/simple-websocket-proxy   # o geo / reputation
+cd simple-websocket-proxy
+cp .env.docker.example .env     # completá tu dominio + secretos
+docker compose up -d            # baja la imagen de GHCR y arranca con TLS automático (Caddy)
+```
+
+Cada repo tiene su **`SELF-HOSTING.md`** con el detalle. Reglas:
+
+- **Grey-cloud / DNS directo** (sin la nube naranja de Cloudflare): que ningún
+  tercero vea el tráfico, y para no cortar los WebSocket de larga vida.
+- **Diversificá proveedor y región** entre nodos — eso hace la descentralización real.
+
+### Entrar a la red
+
+1. Levantá el nodo.
+2. **Federación** (solo proxy): cruzá `PROXY_PEERS` con otros nodos + el mismo
+   `PROXY_FEDERATION_TOKEN`.
+3. **Anunciate**: agregá tu nodo a [`public/nodes.json`](./public/nodes.json) (un
+   PR a este repo). Los clientes lo descubren, lo eligen por latencia y le hacen
+   failover **sin rebuild**.
+
+Diseño completo en
+[`FEDERATION.md`](https://github.com/closerclick/simple-websocket-proxy/blob/main/FEDERATION.md).
+
+---
+
 Landing page para el ecosistema **Closer Click**: lista de las apps que usan el proxy y descripción del servicio. Es un PWA instalable (sin caching de service worker — siempre red), Vue 3 + Vite + TypeScript.
 
 🌐 Producción: **https://closerclick.github.io/closerclick/**
