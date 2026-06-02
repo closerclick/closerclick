@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "updatedAt": "2026-06-02",
+  "note": "Directorio de nodos del ecosistema CloserClick. Los clientes lo bajan para descubrir proxios/servicios sin hardcodear. Los proxios estan federados entre si. Podes agregar nodos propios en el cliente; este directorio es solo un seed.",
+  "proxies": [
+    { "url": "wss://proxy.closer.click", "label": "Closer Click", "region": "us" },
+    { "url": "wss://proxy2.closer.click", "label": "Closer Click 2", "region": "us" }
+  ],
+  "geo": [
+    { "url": "https://geo.closer.click", "label": "Closer Click" }
+  ],
+  "reputation": [
+    { "url": "https://reputation.closer.click", "label": "Closer Click" }
+  ]
+}
