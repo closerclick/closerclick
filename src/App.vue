@@ -35,7 +35,7 @@ const messages = {
   es: {
     htmlLang: 'es',
     nav: { apps: 'Aplicaciones', service: 'Servicio', api: 'API', community: 'Sumá un nodo', install: 'Instalar App' },
-    tabs: { todas: 'Todas', apps: 'Apps', deportes: 'Deportes', juegos: 'Juegos', android: 'Android', wip: 'En Desarrollo' },
+    tabs: { todas: 'Todas', social: 'Social', apps: 'Apps', deportes: 'Deportes', juegos: 'Juegos', android: 'Android', wip: 'En Desarrollo' },
     subtabs: { solo: 'Un jugador', multi: 'Multijugador', config: 'Configurables' },
     install: {
       ios: 'Para instalar: pulsa el botón Compartir y luego "Añadir a pantalla de inicio".',
@@ -98,7 +98,7 @@ const messages = {
   en: {
     htmlLang: 'en',
     nav: { apps: 'Applications', service: 'Service', api: 'API', community: 'Run a node', install: 'Install App' },
-    tabs: { todas: 'All', apps: 'Apps', deportes: 'Sports', juegos: 'Games', android: 'Android', wip: 'In Development' },
+    tabs: { todas: 'All', social: 'Social', apps: 'Apps', deportes: 'Sports', juegos: 'Games', android: 'Android', wip: 'In Development' },
     subtabs: { solo: 'Single player', multi: 'Multiplayer', config: 'Configurable' },
     install: {
       ios: 'To install: tap the Share button and then "Add to Home Screen".',
@@ -162,8 +162,8 @@ const messages = {
 
 const t = computed(() => messages[locale.value])
 
-type TabKey = 'todas' | 'apps' | 'deportes' | 'juegos' | 'android' | 'wip'
-const TAB_ORDER: TabKey[] = ['todas', 'apps', 'deportes', 'juegos', 'android', 'wip']
+type TabKey = 'todas' | 'social' | 'apps' | 'deportes' | 'juegos' | 'android' | 'wip'
+const TAB_ORDER: TabKey[] = ['todas', 'social', 'apps', 'deportes', 'juegos', 'android', 'wip']
 const activeTab = ref<TabKey>('todas')
 const tabApps = (tab: TabKey) =>
   tab === 'wip'
@@ -192,7 +192,7 @@ watch(activeTab, (tab) => {
   }
 })
 
-type AppEntry = { name: string; repo: string; url: string; logo: string; cat: 'apps' | 'deportes' | 'juegos' | 'android'; sub?: SubKey; desc: { es: string; en: string }; wip?: boolean; apk?: string }
+type AppEntry = { name: string; repo: string; url: string; logo: string; cat: 'social' | 'apps' | 'deportes' | 'juegos' | 'android'; sub?: SubKey; desc: { es: string; en: string }; wip?: boolean; apk?: string }
 const apps: AppEntry[] = [
   {
     name: 'Pronóstico Mundialista',
@@ -211,7 +211,7 @@ const apps: AppEntry[] = [
     url: 'https://chat.closer.click/',
     logo: chatLogo,
     repo: 'closerclick/simple-websocket-chat',
-    cat: 'apps',
+    cat: 'social',
     desc: {
       es: 'Chat en tiempo real con salas públicas, descubrimiento de canales y mensajería P2P por WebRTC con caída automática al proxy WebSocket.',
       en: 'Real-time chat with public rooms, channel discovery and P2P messaging over WebRTC with automatic fallback to the WebSocket proxy.',
@@ -222,7 +222,7 @@ const apps: AppEntry[] = [
     url: 'https://messenger.closer.click/',
     logo: messengerLogo,
     repo: 'closerclick/closerclick_messenger',
-    cat: 'apps',
+    cat: 'social',
     desc: {
       es: 'Mensajería 1-a-1 con cifrado E2E (ECDH+AES-GCM), contactos compartidos entre apps del ecosistema, hilos persistidos en <code>store.closer.click</code> (mismos mensajes en web + extensión), mensajes offline (proxy retiene 24 h) y ranking integrado. PWA instalable + extensión Chrome MV3 reusando la PWA via iframe.',
       en: 'One-to-one messaging with E2E encryption (ECDH+AES-GCM), contacts shared across ecosystem apps, threads persisted in <code>store.closer.click</code> (same messages on web + extension), offline messages (proxy holds them for 24 h) and built-in ratings. Installable PWA + Chrome MV3 extension reusing the PWA via iframe.',
@@ -233,7 +233,7 @@ const apps: AppEntry[] = [
     url: 'https://trueque.closer.click/',
     logo: truequeLogo,
     repo: 'closerclick/trueque',
-    cat: 'apps',
+    cat: 'social',
     desc: {
       es: 'Anuncios georreferenciados <strong>efímeros</strong> (vendo / regalo / busco) cerca tuyo. Publicás un pin firmado con tu identidad del vault que vive máx 24 h (sin historial), descubrís por radio con un <strong>radar de proximidad</strong> sin mapas de terceros, y cerrás el trato por el messenger (contacto vía proxy). Estrena el pilar de descubrimiento geo <code>geo.closer.click</code>: tu ubicación no se guarda.',
       en: 'Georeferenced <strong>ephemeral</strong> listings (sell / give away / looking for) near you. Publish a pin signed with your vault identity that lives up to 24 h (no history), discover by radius with a <strong>proximity radar</strong> with no third-party maps, and close the deal over the messenger (contact via proxy). Debuts the geo discovery pillar <code>geo.closer.click</code>: your location is never stored.',
@@ -244,7 +244,7 @@ const apps: AppEntry[] = [
     url: 'https://eco.closer.click/',
     logo: ecoLogo,
     repo: 'closerclick/eco',
-    cat: 'apps',
+    cat: 'social',
     desc: {
       es: 'Microblogging <strong>efímero y georreferenciado</strong>: publicás un eco (texto + enlaces + tags) con tu ubicación, quien lo tenga en su <strong>radio de escucha</strong> lo descubre por <code>geo.closer.click</code>, lo recibe y lo <strong>archiva localmente</strong>. A las <strong>24 h muere en la red</strong> y nunca se re-emite (solo sobrevive tu copia local); reps y replies <strong>rehidratan</strong> el original. El orden del feed (recencia · afinidad · reputación · tags · geo) se calcula <strong>100 % en tu cliente</strong>. Tu voz, en tu zona, bajo tus reglas.',
       en: 'Ephemeral, <strong>georeferenced microblogging</strong>: post an eco (text + links + tags) with your location; whoever has it in their <strong>listening radius</strong> discovers it via <code>geo.closer.click</code>, receives it and <strong>archives it locally</strong>. After <strong>24 h it dies on the network</strong> and is never re-broadcast (only your local copy survives); reposts and replies <strong>rehydrate</strong> the original. Feed order (recency · affinity · reputation · tags · geo) is computed <strong>100% on your client</strong>. Your voice, in your radius, under your rules.',
