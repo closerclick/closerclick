@@ -537,6 +537,7 @@ const openMyProfile = async () => {
   profilePk.value = pk
 }
 const bindProfile = (el: any) => { if (!el) return; ensureProvider().then((p: any) => { if (p) el.provider = p }) }
+const onProfileName = (e: any) => { const n = e?.detail?.name; if (n) myName.value = n }
 useBackLayer(profilePk, { onClose: () => { profilePk.value = null } })
 
 // Tema del Web Component de perfil acorde al home (tinta + lima, fuentes propias).
@@ -883,11 +884,12 @@ onUnmounted(() => {
       v-if="profilePk"
       :ref="bindProfile"
       modal
-      mode="view"
+      mode="self"
       :pubkey="profilePk"
       :name="myName"
       :lang="locale"
       :style="profileTheme"
+      @cc-profile-name="onProfileName"
       @cc-profile-close="profilePk = null"
     ></closer-click-profile>
   </div>
