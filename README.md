@@ -21,7 +21,7 @@ El eje del ecosistema **[CloserClick](https://closer.click)** es el **autohosteo
 
 ---
 
-## Colaborá: sumá tu nodo (autohosteo)
+## Colabora: suma tu nodo (autohosteo)
 
 El ecosistema se sostiene en una **red de nodos** que cualquiera puede correr. Los
 servicios son **livianos** y vienen **dockerizados turnkey**, con imágenes en

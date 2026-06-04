@@ -34,7 +34,7 @@ const locale = ref<Locale>(detectLocale())
 const messages = {
   es: {
     htmlLang: 'es',
-    nav: { apps: 'Aplicaciones', service: 'Servicio', api: 'API', community: 'Sumá un nodo', install: 'Instalar App' },
+    nav: { apps: 'Aplicaciones', service: 'Servicio', api: 'API', community: 'Suma un nodo', install: 'Instalar App' },
     tabs: { todas: 'Todas', social: 'Social', apps: 'Apps', deportes: 'Deportes', juegos: 'Juegos', android: 'Android', wip: 'En Desarrollo' },
     subtabs: { solo: 'Un jugador', multi: 'Multijugador', config: 'Configurables' },
     install: {
@@ -69,7 +69,7 @@ const messages = {
       text: 'Una sola conexión WebSocket. Mensajes JSON. Sin endpoints HTTP, sin SDK obligatorio.',
     },
     community: {
-      title: 'Sumá tu nodo',
+      title: 'Suma tu nodo',
       intro: 'El ecosistema lo sostiene una red de nodos que cualquiera puede correr. Los servicios son livianos y vienen dockerizados, con imágenes en GHCR (multi-arch, también para Raspberry Pi).',
       services: [
         { name: 'proxy', desc: 'transporte federado', img: 'ghcr.io/closerclick/simple-websocket-proxy' },
@@ -79,11 +79,11 @@ const messages = {
       cmd: 'docker compose up -d',
       cmdNote: 'Baja la imagen y arranca con TLS automático (Caddy).',
       steps: [
-        'Levantá el nodo con un comando.',
-        'Federá: cruzá PROXY_PEERS con otros nodos (solo el proxy).',
-        'Anunciate: agregá tu nodo a nodes.json (un PR) y los clientes lo descubren solos.',
+        'Levanta el nodo con un comando.',
+        'Federa: cruza PROXY_PEERS con otros nodos (solo el proxy).',
+        'Anúnciate: agrega tu nodo a nodes.json (un PR) y los clientes lo descubren solos.',
       ],
-      note: 'DNS directo (sin nube naranja) y diversificá proveedor/región — eso hace la descentralización real.',
+      note: 'DNS directo (sin nube naranja) y diversifica proveedor/región — eso hace la descentralización real.',
       cta: 'Cómo colaborar',
     },
     footer: {
@@ -235,7 +235,7 @@ const apps: AppEntry[] = [
     repo: 'closerclick/trueque',
     cat: 'social',
     desc: {
-      es: 'Anuncios georreferenciados <strong>efímeros</strong> (vendo / regalo / busco) cerca tuyo. Publicás un pin firmado con tu identidad del vault que vive máx 24 h (sin historial), descubrís por radio con un <strong>radar de proximidad</strong> sin mapas de terceros, y cerrás el trato por el messenger (contacto vía proxy). Estrena el pilar de descubrimiento geo <code>geo.closer.click</code>: tu ubicación no se guarda.',
+      es: 'Anuncios georreferenciados <strong>efímeros</strong> (vendo / regalo / busco) cerca de ti. Publicas un pin firmado con tu identidad del vault que vive máx 24 h (sin historial), descubres por radio con un <strong>radar de proximidad</strong> sin mapas de terceros, y cierras el trato por el messenger (contacto vía proxy). Estrena el pilar de descubrimiento geo <code>geo.closer.click</code>: tu ubicación no se guarda.',
       en: 'Georeferenced <strong>ephemeral</strong> listings (sell / give away / looking for) near you. Publish a pin signed with your vault identity that lives up to 24 h (no history), discover by radius with a <strong>proximity radar</strong> with no third-party maps, and close the deal over the messenger (contact via proxy). Debuts the geo discovery pillar <code>geo.closer.click</code>: your location is never stored.',
     },
   },
@@ -246,7 +246,7 @@ const apps: AppEntry[] = [
     repo: 'closerclick/eco',
     cat: 'social',
     desc: {
-      es: 'Microblogging <strong>efímero y georreferenciado</strong>: publicás un eco (texto + enlaces + tags) con tu ubicación, quien lo tenga en su <strong>radio de escucha</strong> lo descubre por <code>geo.closer.click</code>, lo recibe y lo <strong>archiva localmente</strong>. A las <strong>24 h muere en la red</strong> y nunca se re-emite (solo sobrevive tu copia local); reps y replies <strong>rehidratan</strong> el original. El orden del feed (recencia · afinidad · reputación · tags · geo) se calcula <strong>100 % en tu cliente</strong>. Tu voz, en tu zona, bajo tus reglas.',
+      es: 'Microblogging <strong>efímero y georreferenciado</strong>: publicas un eco (texto + enlaces + tags) con tu ubicación, quien lo tenga en su <strong>radio de escucha</strong> lo descubre por <code>geo.closer.click</code>, lo recibe y lo <strong>archiva localmente</strong>. A las <strong>24 h muere en la red</strong> y nunca se re-emite (solo sobrevive tu copia local); reps y replies <strong>rehidratan</strong> el original. El orden del feed (recencia · afinidad · reputación · tags · geo) se calcula <strong>100 % en tu cliente</strong>. Tu voz, en tu zona, bajo tus reglas.',
       en: 'Ephemeral, <strong>georeferenced microblogging</strong>: post an eco (text + links + tags) with your location; whoever has it in their <strong>listening radius</strong> discovers it via <code>geo.closer.click</code>, receives it and <strong>archives it locally</strong>. After <strong>24 h it dies on the network</strong> and is never re-broadcast (only your local copy survives); reposts and replies <strong>rehydrate</strong> the original. Feed order (recency · affinity · reputation · tags · geo) is computed <strong>100% on your client</strong>. Your voice, in your radius, under your rules.',
     },
   },
@@ -326,7 +326,7 @@ const apps: AppEntry[] = [
     cat: 'juegos',
     sub: 'config',
     desc: {
-      es: 'Trivia configurable: pegá tu <code>JSON</code> de preguntas (o generalo con IA desde un prompt listo para copiar), elegí un color del que se deriva toda la paleta, modo claro/oscuro, tu logo y fondos para móvil y web. Modos quiz con puntaje, verdadero/falso y flashcards; elegís cuántas preguntas mostrar y publicás un enlace limpio para jugar. PWA instalable; tus trivias viven en tu navegador.',
+      es: 'Trivia configurable: pega tu <code>JSON</code> de preguntas (o genéralo con IA desde un prompt listo para copiar), elige un color del que se deriva toda la paleta, modo claro/oscuro, tu logo y fondos para móvil y web. Modos quiz con puntaje, verdadero/falso y flashcards; eliges cuántas preguntas mostrar y publicas un enlace limpio para jugar. PWA instalable; tus trivias viven en tu navegador.',
       en: 'Configurable trivia: paste your <code>JSON</code> of questions (or generate it with AI from a ready-to-copy prompt), pick one color that derives the whole palette, light/dark mode, your logo and backgrounds for mobile and web. Quiz (scored), true/false and flashcard modes; choose how many questions to show and publish a clean link to play. Installable PWA; your trivias live in your browser.',
     },
   },
@@ -719,7 +719,7 @@ onUnmounted(() => {
         <p class="community-note">{{ t.community.note }}</p>
         <a
           class="community-cta"
-          href="https://github.com/closerclick/closerclick#colaborá-sumá-tu-nodo-autohosteo"
+          href="https://github.com/closerclick/closerclick#colabora-suma-tu-nodo-autohosteo"
           target="_blank"
           rel="noopener"
         >{{ t.community.cta }}</a>
