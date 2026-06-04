@@ -16,6 +16,7 @@ import androidLauncherLogo from './assets/apps/android-launcher.svg'
 import triviaLogo from './assets/apps/trivia.svg'
 import truequeLogo from './assets/apps/trueque.svg'
 import ecoLogo from './assets/apps/eco.svg'
+import { useBackLayer } from '@closerclick/closer-click-nav/vue'
 
 const isScrolled = ref(false)
 const menuOpen = ref(false)
@@ -57,7 +58,7 @@ const messages = {
       text: 'Aplicaciones que usan el proxy de Closer Click.',
       open: 'Abrir aplicación',
       download: 'Descargar APK',
-      fullHome: 'Ver home completo',
+      fullHome: '¿Qué es CloserClick?',
       info: 'Ver descripción',
       close: 'Cerrar',
     },
@@ -120,7 +121,7 @@ const messages = {
       text: 'Applications that use the Closer Click proxy.',
       open: 'Open app',
       download: 'Download APK',
-      fullHome: 'Show full home',
+      fullHome: 'What is CloserClick?',
       info: 'View description',
       close: 'Close',
     },
@@ -430,8 +431,26 @@ watch(
   { immediate: true }
 )
 
-const VISITED_KEY = 'closerclick.visited'
-const compact = ref(localStorage.getItem(VISITED_KEY) === '1')
+// Vistas: home = página simplificada (root oficial '/', solo apps),
+// about = "¿Qué es CloserClick?" ('/que-es', toda la info del home sin la
+// sección de apps). Routing real: la vista about tiene URL propia enlazable e
+// indexable. `aboutOpen` se registra como capa de closer-click-nav (ver
+// useBackLayer abajo) con { url } para reflejar la ruta; el "atrás" del
+// navegador / chevron vuelve a la página de apps antes de salir del sitio.
+const ABOUT_PATH = '/que-es'
+// Vista inicial derivada de la URL (deep-link directo a /que-es, p. ej. desde
+// la versión estática que-es.html que sirve GitHub Pages con 200; acepta también
+// /que-es.html y barra final).
+const aboutOpen = ref(/\/que-es(\.html)?\/?$/.test(window.location.pathname))
+const compact = computed(() => !aboutOpen.value)
+
+// Mantén el <title> acorde a la vista en navegación cliente (los títulos de la
+// carga inicial los ponen index.html / que-es.html, ya correctos para crawlers).
+watch(aboutOpen, (open) => {
+  document.title = open
+    ? '¿Qué es CloserClick? — Filosofía y arquitectura'
+    : 'Closer Click - Ecosistema de Aplicaciones'
+})
 
 // PWA install prompt
 let deferredPrompt: any = null
@@ -478,35 +497,50 @@ const closeInfo = () => {
   infoApp.value = null
 }
 
-const showFullHome = () => {
-  compact.value = false
+// Volver unificado (@closerclick/closer-click-nav): el botón físico / chevron
+// cierra el modal de info o el menú móvil, luego la vista "¿Qué es CloserClick?"
+// (vuelve a la página de apps), y solo después abandona el sitio.
+useBackLayer(infoApp, { onClose: () => { infoApp.value = null } })
+useBackLayer(menuOpen)
+useBackLayer(aboutOpen, { url: ABOUT_PATH })
+
+// Navega entre la página de apps (root) y "¿Qué es CloserClick?". El cambio de
+// vista y la URL los gestiona la capa de back (aboutOpen + { url }); al volver a
+// home con una capa abierta, closer-click-nav restaura la URL solo. El
+// replaceState es solo la red de seguridad del deep-link directo a /que-es
+// (donde no hay capa que cerrar) para que la barra vuelva a '/'.
+const navTo = (target: 'home' | 'about', sectionId?: string) => {
+  menuOpen.value = false
+  const wasAbout = aboutOpen.value
+  aboutOpen.value = target === 'about'
+  if (target === 'home' && wasAbout && window.location.pathname !== '/') {
+    window.history.replaceState(window.history.state, '', '/')
+  }
   requestAnimationFrame(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    const element = sectionId ? document.getElementById(sectionId) : null
+    if (element) element.scrollIntoView({ behavior: 'smooth' })
+    else window.scrollTo({ top: 0, behavior: 'smooth' })
   })
 }
+
+const showFullHome = () => navTo('about')
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50
 }
 
 const scrollToSection = (sectionId: string) => {
-  menuOpen.value = false
-  if (compact.value && sectionId !== 'aplicaciones') {
-    compact.value = false
+  if (sectionId === 'aplicaciones') {
+    navTo('home', 'aplicaciones')
+  } else {
+    navTo('about', sectionId)
   }
-  requestAnimationFrame(() => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
-  })
 }
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt)
   window.addEventListener('appinstalled', onAppInstalled)
-  localStorage.setItem(VISITED_KEY, '1')
 })
 
 onUnmounted(() => {
@@ -521,6 +555,7 @@ onUnmounted(() => {
     <nav :class="['navbar', { 'scrolled': isScrolled }]">
       <div class="nav-container">
         <div class="logo">
+          <closer-click-back class="cc-back"></closer-click-back>
           <img src="/images/logo.png" alt="Closer Click Logo" class="logo-img" />
           <span class="logo-text">Closer Click</span>
         </div>
@@ -598,9 +633,9 @@ onUnmounted(() => {
     <div v-if="compact" class="compact-spacer"></div>
 
     <section
+      v-if="compact"
       id="aplicaciones"
-      class="section aplicaciones-section"
-      :class="{ 'apps-only': compact }"
+      class="section aplicaciones-section apps-only"
     >
       <div class="parallax-bg aplicaciones-bg"></div>
       <div class="section-content">
@@ -650,7 +685,7 @@ onUnmounted(() => {
             >i</button>
             <a
               :href="a.url"
-              target="_blank"
+              :target="a.apk ? '_blank' : '_self'"
               rel="noopener"
               class="app-logo-link"
               :aria-label="t.apps.open + ': ' + a.name"
@@ -775,7 +810,7 @@ onUnmounted(() => {
         <div class="info-modal-actions">
           <a
             :href="infoApp.url"
-            target="_blank"
+            :target="infoApp.apk ? '_blank' : '_self'"
             rel="noopener"
             class="app-button"
           >{{ infoApp.apk ? t.apps.download : t.apps.open }}</a>
@@ -798,6 +833,7 @@ onUnmounted(() => {
 .navbar.scrolled { background: #2c3e50; box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3); }
 .nav-container { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
 .logo { display: flex; align-items: center; gap: 0.5rem; }
+.cc-back { color: var(--text-light, #fff); --cc-back-size: 34px; margin-left: -6px; }
 .logo-img { height: 40px; width: auto; }
 .logo-text { font-size: 1.5rem; font-weight: bold; color: #ffffff; }
 .nav-actions { display: flex; align-items: center; gap: 0.75rem; }

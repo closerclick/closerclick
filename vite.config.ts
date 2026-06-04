@@ -8,8 +8,8 @@ export default defineConfig({
     vue({
       template: {
         compilerOptions: {
-          // Web Component del ecosistema (@closerclick/closer-click-support)
-          isCustomElement: (tag) => tag === 'closer-click-support',
+          // Web Components del ecosistema (@closerclick/closer-click-*)
+          isCustomElement: (tag) => tag.startsWith('closer-click-'),
         },
       },
     }),
