@@ -39,12 +39,12 @@
   --text-dim:   #94a1b0;
   --text-faint: #5c6775;
 
-  /* Acento de marca: el rojo-naranja del logo (logo.png = #ff3310, rojo + blanco). */
-  --accent:       #ff3a1c;
-  --accent-press: #e62f12;
-  --accent-rgb:   255, 58, 28;
+  /* Acento de marca: lima, 5% menos saturado que el original (#c8f751). */
+  --accent:       #c6f355;
+  --accent-press: #b4e440;
+  --accent-rgb:   198, 243, 85;
   --accent-soft:  rgba(var(--accent-rgb), 0.13);
-  --accent-ink:   #ffffff;
+  --accent-ink:   #0a0d05;
   /* Secundario frío para etiquetas WIP / matices. */
   --mint:         #6ee7c8;
 
