@@ -5,6 +5,7 @@ import chatLogo from './assets/apps/chat.svg'
 import messengerLogo from './assets/apps/messenger.svg'
 import qrshareLogo from './assets/apps/qrshare.svg'
 import chessLogo from './assets/apps/chess.svg'
+import cuarentaLogo from './assets/apps/cuarenta.svg'
 import ecuavoleyLogo from './assets/apps/ecuavoley.svg'
 import padelLogo from './assets/apps/padel.svg'
 import gridgameLogo from './assets/apps/gridgame.svg'
@@ -271,6 +272,18 @@ const apps: AppEntry[] = [
     desc: {
       es: 'Ajedrez online multijugador con transporte P2P por WebRTC cuando es posible. Crea partidas públicas o privadas; el lobby se actualiza en tiempo real con los eventos del proxy.',
       en: 'Online multiplayer chess with P2P transport over WebRTC when possible. Create public or private games; the lobby updates in real time from the proxy events.',
+    },
+  },
+  {
+    name: 'Cuarenta (40)',
+    url: 'https://cuarenta.closer.click/',
+    logo: cuarentaLogo,
+    repo: 'closerclick/cuarenta',
+    cat: 'juegos',
+    sub: 'multi',
+    desc: {
+      es: 'El <strong>Cuarenta</strong>, el juego de naipes tradicional del Ecuador, en línea para <strong>2 ó 4 jugadores</strong>. Crea mesas públicas o privadas; lobby, asientos y turnos sobre el proxy, identidad por vault y transporte P2P. Caída, limpia, ronda y cartón, con reputación y perfil del ecosistema.',
+      en: 'The <strong>Cuarenta</strong> (40), Ecuador\'s traditional card game, online for <strong>2 or 4 players</strong>. Create public or private tables; lobby, seats and turns over the proxy, vault identity and P2P transport. Caída, sweep, ronda and card-count, with ecosystem reputation and profile.',
     },
   },
   {
