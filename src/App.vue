@@ -646,6 +646,10 @@ onUnmounted(() => {
       <div class="section-content">
         <h2 class="section-title">{{ t.apps.title }}</h2>
         <p class="section-text">{{ t.apps.text }}</p>
+        <button
+          @click="showFullHome"
+          class="full-home-button"
+        >{{ t.apps.fullHome }}</button>
         <div class="apps-tabs" role="tablist">
           <button
             v-for="tab in visibleTabs"
@@ -707,12 +711,6 @@ onUnmounted(() => {
             >github.com/{{ a.repo }}</a>
           </div>
         </div>
-
-        <button
-          v-if="compact"
-          @click="showFullHome"
-          class="full-home-button"
-        >{{ t.apps.fullHome }}</button>
       </div>
     </section>
 
@@ -1016,9 +1014,9 @@ code, .section-text code, .info-modal-desc code, .service-item code, .api-item c
 .aplicaciones-section.apps-only .apps-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.1rem; }
 
 .full-home-button {
-  margin-top: 3rem; background: transparent; color: var(--text);
-  border: 1px solid var(--line-2); padding: 0.8rem 1.9rem; font-family: var(--font-body);
-  font-size: 0.95rem; font-weight: 600; border-radius: 10px; cursor: pointer;
+  display: block; margin: 0 auto; background: transparent; color: var(--text);
+  border: 1px solid var(--line-2); padding: 0.7rem 1.7rem; font-family: var(--font-body);
+  font-size: 0.92rem; font-weight: 600; border-radius: 10px; cursor: pointer;
   transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
 }
 .full-home-button:hover { background: var(--surface-2); border-color: var(--accent); color: var(--text); transform: translateY(-2px); }
