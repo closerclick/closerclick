@@ -544,7 +544,7 @@ useBackLayer(profilePk, { onClose: () => { profilePk.value = null } })
 const profileTheme = {
   '--ccp-bg': '#0d1117', '--ccp-bg-2': '#12161d', '--ccp-bg-3': '#171c24', '--ccp-bg-4': '#1f2630',
   '--ccp-border': 'rgba(255,255,255,0.16)', '--ccp-text': '#e9eef3', '--ccp-muted': '#94a1b0',
-  '--ccp-accent': '#c8f751', '--ccp-accent-2': '#b6e83c', '--ccp-gold': '#ffd166', '--ccp-derived': '#d49a00',
+  '--ccp-accent': '#ff3a1c', '--ccp-accent-2': '#e62f12', '--ccp-gold': '#ffd166', '--ccp-derived': '#d49a00',
   '--ccp-online': '#6ee7c8', '--ccp-affinity': '#7cc4ff', '--ccp-input-bg': '#0b0f15', '--ccp-radius': '16px',
   '--ccp-font': "'Hanken Grotesk', system-ui, sans-serif",
   '--ccp-font-headline': "'Bricolage Grotesque', system-ui, sans-serif",
@@ -919,7 +919,7 @@ onUnmounted(() => {
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(60rem 40rem at 78% -8%, rgba(200, 247, 81, 0.10), transparent 60%),
+    radial-gradient(60rem 40rem at 78% -8%, rgba(var(--accent-rgb), 0.10), transparent 60%),
     radial-gradient(50rem 38rem at 8% 12%, rgba(70, 120, 150, 0.12), transparent 62%),
     linear-gradient(180deg, #0b0f15, var(--ink) 38%);
 }
@@ -994,7 +994,7 @@ onUnmounted(() => {
   border-radius: 8px; cursor: pointer; white-space: nowrap;
   transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
-.install-btn:hover { background: var(--accent-press); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(200, 247, 81, 0.22); }
+.install-btn:hover { background: var(--accent-press); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(var(--accent-rgb), 0.22); }
 
 /* Botón "mi perfil": circular, ghost, a la izquierda de la moneda de soporte. */
 .nav-profile {
@@ -1047,7 +1047,7 @@ onUnmounted(() => {
 .hero-glow {
   position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
   width: min(80rem, 120%); height: 60rem; pointer-events: none; z-index: 0;
-  background: radial-gradient(closest-side, rgba(200, 247, 81, 0.16), transparent 70%);
+  background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.16), transparent 70%);
   filter: blur(8px);
 }
 .hero-content { position: relative; z-index: 2; text-align: center; max-width: 880px; }
@@ -1072,9 +1072,9 @@ onUnmounted(() => {
   padding: 0.95rem 2.2rem; font-family: var(--font-body); font-size: 1.02rem; font-weight: 700;
   border-radius: 10px; cursor: pointer;
   transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-  box-shadow: 0 8px 30px rgba(200, 247, 81, 0.18);
+  box-shadow: 0 8px 30px rgba(var(--accent-rgb), 0.18);
 }
-.cta-button:hover { background: var(--accent-press); transform: translateY(-2px); box-shadow: 0 12px 38px rgba(200, 247, 81, 0.28); }
+.cta-button:hover { background: var(--accent-press); transform: translateY(-2px); box-shadow: 0 12px 38px rgba(var(--accent-rgb), 0.28); }
 
 .compact-spacer { height: 64px; }
 
@@ -1086,8 +1086,8 @@ onUnmounted(() => {
 .section-text { font-size: 1.1rem; line-height: 1.7; color: var(--text-dim); max-width: 680px; margin: 0 auto 2.5rem; }
 code, .section-text code, .info-modal-desc code, .service-item code, .api-item code, .community-service code {
   font-family: var(--font-mono); font-size: 0.85em;
-  background: rgba(200, 247, 81, 0.08); color: var(--accent);
-  padding: 0.12em 0.42em; border-radius: 5px; border: 1px solid rgba(200, 247, 81, 0.14);
+  background: rgba(var(--accent-rgb), 0.08); color: var(--accent);
+  padding: 0.12em 0.42em; border-radius: 5px; border: 1px solid rgba(var(--accent-rgb), 0.14);
 }
 
 /* Modo compacto (home /): solo logo + nombre. */
@@ -1142,7 +1142,7 @@ code, .section-text code, .info-modal-desc code, .service-item code, .api-item c
 }
 .app-card::before {
   content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.25s ease;
-  background: radial-gradient(50% 60% at 50% 0%, rgba(200, 247, 81, 0.10), transparent 70%);
+  background: radial-gradient(50% 60% at 50% 0%, rgba(var(--accent-rgb), 0.10), transparent 70%);
 }
 .app-card:hover {
   transform: translateY(-6px); border-color: var(--line-2); background: var(--surface-2);
@@ -1155,7 +1155,7 @@ code, .section-text code, .info-modal-desc code, .service-item code, .api-item c
 .app-logo-link:focus, .app-logo-link:active, .app-logo-link:focus-visible { outline: none; }
 .app-logo { width: 80px; height: 80px; margin-bottom: 1.2rem; border-radius: 18px; box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4); transition: transform 0.3s ease, box-shadow 0.3s ease; }
 .app-card:hover .app-logo { transform: scale(1.05) rotate(-2deg); }
-.app-logo-link:hover .app-logo { box-shadow: 0 14px 32px rgba(200, 247, 81, 0.28); }
+.app-logo-link:hover .app-logo { box-shadow: 0 14px 32px rgba(var(--accent-rgb), 0.28); }
 .app-card h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; font-size: 1.32rem; color: var(--text); margin-bottom: 0.75rem; }
 .app-card p { line-height: 1.62; color: var(--text-dim); font-size: 0.96rem; margin-bottom: 1.4rem; }
 .app-button {
