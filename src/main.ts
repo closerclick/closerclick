@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import './style.css'
 import '@closerclick/closer-click-support'
+import '@closerclick/closer-click-install'
 import { createBackNav } from '@closerclick/closer-click-nav'
 import App from './App.vue'
 

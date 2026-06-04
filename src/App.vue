@@ -456,42 +456,9 @@ watch(aboutOpen, (open) => {
     : 'Closer Click - Ecosistema de Aplicaciones'
 })
 
-// PWA install prompt
-let deferredPrompt: any = null
-const isStandalone = ref(
-  window.matchMedia('(display-mode: standalone)').matches ||
-  (navigator as any).standalone === true
-)
-const canInstall = ref(!isStandalone.value)
-
-const onBeforeInstallPrompt = (e: Event) => {
-  e.preventDefault()
-  deferredPrompt = e
-  canInstall.value = true
-}
-
-const onAppInstalled = () => {
-  deferredPrompt = null
-  canInstall.value = false
-  isStandalone.value = true
-}
-
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream
-
-const installApp = async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt()
-    await deferredPrompt.userChoice
-    deferredPrompt = null
-    canInstall.value = false
-    return
-  }
-  if (isIOS) {
-    alert(t.value.install.ios)
-  } else {
-    alert(t.value.install.other)
-  }
-}
+// PWA install: el botón "Instalar App" lo provee el Web Component compartido
+// <closer-click-install> (captura beforeinstallprompt, modal iOS propio sin
+// alert, se auto-oculta si ya está instalada). Ver template.
 
 const infoApp = ref<AppEntry | null>(null)
 const openInfo = (a: AppEntry) => {
@@ -586,14 +553,10 @@ const scrollToSection = (sectionId: string) => {
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
-  window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt)
-  window.addEventListener('appinstalled', onAppInstalled)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
-  window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt)
-  window.removeEventListener('appinstalled', onAppInstalled)
 })
 </script>
 
@@ -627,11 +590,7 @@ onUnmounted(() => {
             >EN</button>
           </div>
 
-          <button
-            v-if="!isStandalone"
-            @click="installApp"
-            class="install-btn"
-          >{{ t.nav.install }}</button>
+          <closer-click-install class="cc-install" :lang="locale"></closer-click-install>
         </div>
 
         <div class="nav-links desktop-links">
@@ -923,18 +882,21 @@ onUnmounted(() => {
     radial-gradient(50rem 38rem at 8% 12%, rgba(70, 120, 150, 0.12), transparent 62%),
     linear-gradient(180deg, #0b0f15, var(--ink) 38%);
 }
-/* Grilla técnica tenue, con desvanecido radial hacia los bordes. */
+/* Grilla técnica tenue, con desvanecido radial hacia los bordes.
+   El fundido se HORNEA como viñeta de tinta dentro del mismo background en vez
+   de usar `mask-image`: enmascarar una capa `position: fixed` a pantalla
+   completa corrompe el compositor en algunas GPUs móviles (bandas horizontales
+   rotas en Android/MIUI). Sin máscara = sin tile corrupto. */
 .app::after {
   content: '';
   position: fixed;
   inset: 0;
   z-index: -1;
   background-image:
+    radial-gradient(120% 90% at 50% 0%, transparent 30%, var(--ink) 82%),
     linear-gradient(var(--line) 1px, transparent 1px),
     linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 64px 64px;
-  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%);
-          mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%);
+  background-size: 100% 100%, 64px 64px, 64px 64px;
   opacity: 0.5;
   pointer-events: none;
 }
@@ -988,13 +950,25 @@ onUnmounted(() => {
 .lang-selector button:hover { color: var(--text); }
 .lang-selector button.on { background: var(--accent); color: var(--accent-ink); }
 
-.install-btn {
-  background: var(--accent); color: var(--accent-ink); border: none;
-  padding: 0.5rem 1.05rem; font-family: var(--font-body); font-size: 0.86rem; font-weight: 700;
-  border-radius: 8px; cursor: pointer; white-space: nowrap;
+/* Botón "Instalar App" = Web Component compartido <closer-click-install>.
+   Conserva el look del viejo .install-btn vía custom properties + ::part. */
+.cc-install {
+  --cc-install-bg: var(--accent);
+  --cc-install-color: var(--accent-ink);
+  --cc-install-bg-hover: var(--accent-press);
+  --cc-install-radius: 8px;
+  --cc-install-pad: 0.5rem 1.05rem;
+  --cc-install-font-size: 0.86rem;
+}
+.cc-install::part(button) {
+  font-family: var(--font-body); font-weight: 700; white-space: nowrap;
+  border: none; cursor: pointer;
   transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
-.install-btn:hover { background: var(--accent-press); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(var(--accent-rgb), 0.22); }
+.cc-install::part(button):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(var(--accent-rgb), 0.22);
+}
 
 /* Botón "mi perfil": circular, ghost, a la izquierda de la moneda de soporte. */
 .nav-profile {
