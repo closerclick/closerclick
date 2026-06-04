@@ -544,7 +544,7 @@ useBackLayer(profilePk, { onClose: () => { profilePk.value = null } })
 const profileTheme = {
   '--ccp-bg': '#0d1117', '--ccp-bg-2': '#12161d', '--ccp-bg-3': '#171c24', '--ccp-bg-4': '#1f2630',
   '--ccp-border': 'rgba(255,255,255,0.16)', '--ccp-text': '#e9eef3', '--ccp-muted': '#94a1b0',
-  '--ccp-accent': '#c6f355', '--ccp-accent-2': '#b4e440', '--ccp-gold': '#ffd166', '--ccp-derived': '#d49a00',
+  '--ccp-accent': '#c6f355', '--ccp-accent-2': '#b4e440', '--ccp-accent-text': '#0a0d05', '--ccp-gold': '#ffd166', '--ccp-derived': '#d49a00',
   '--ccp-online': '#6ee7c8', '--ccp-affinity': '#7cc4ff', '--ccp-input-bg': '#0b0f15', '--ccp-radius': '16px',
   '--ccp-font': "'Hanken Grotesk', system-ui, sans-serif",
   '--ccp-font-headline': "'Bricolage Grotesque', system-ui, sans-serif",
