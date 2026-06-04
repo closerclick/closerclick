@@ -555,7 +555,13 @@ onUnmounted(() => {
     <nav :class="['navbar', { 'scrolled': isScrolled }]">
       <div class="nav-container">
         <div class="logo">
-          <closer-click-back class="cc-back"></closer-click-back>
+          <!-- closer.click es el root del ecosistema: en el home no hay a dónde
+               volver, así que el chevron solo aparece cuando hay algo atrás
+               (vista /que-es o un modal/menú abierto). -->
+          <closer-click-back
+            v-if="aboutOpen || infoApp || menuOpen"
+            class="cc-back"
+          ></closer-click-back>
           <img src="/images/logo.png" alt="Closer Click Logo" class="logo-img" />
           <span class="logo-text">Closer Click</span>
         </div>
