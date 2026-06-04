@@ -204,8 +204,8 @@ const apps: AppEntry[] = [
     cat: 'juegos',
     sub: 'multi',
     desc: {
-      es: 'Arma tu pronóstico del Mundial 2026 (48 selecciones) en tres modos (simple, gana/pierde o con marcador), compite con tus amigos y lleva tu tabla de aciertos. Se codifica completo en una cadena corta, se firma con tu identidad ECDSA del vault <code>id.closer.click</code> y se comparte por QR.',
-      en: 'Build your 2026 World Cup predictions (48 teams) in three modes (simple, win/lose or with scoreline), compete with your friends and track your hit table. It is fully encoded in a short string, signed with your ECDSA identity from the <code>id.closer.click</code> vault and shared by QR.',
+      es: 'Arma tu pronóstico del Mundial 2026 (48 selecciones) en tres modos (simple, gana/pierde o con marcador), compite con tus amigos y lleva tu tabla de aciertos.',
+      en: 'Build your 2026 World Cup predictions (48 teams) in three modes (simple, win/lose or with scoreline), compete with your friends and track your hit table.',
     },
   },
   {
@@ -215,8 +215,8 @@ const apps: AppEntry[] = [
     repo: 'closerclick/simple-websocket-chat',
     cat: 'social',
     desc: {
-      es: 'Chat en tiempo real con salas públicas, descubrimiento de canales y mensajería P2P por WebRTC con caída automática al proxy WebSocket.',
-      en: 'Real-time chat with public rooms, channel discovery and P2P messaging over WebRTC with automatic fallback to the WebSocket proxy.',
+      es: 'Chat en tiempo real con salas públicas y mensajes directos.',
+      en: 'Real-time chat with public rooms and direct messages.',
     },
   },
   {
@@ -226,8 +226,8 @@ const apps: AppEntry[] = [
     repo: 'closerclick/closerclick_messenger',
     cat: 'social',
     desc: {
-      es: 'Mensajería 1-a-1 con cifrado E2E (ECDH+AES-GCM), contactos compartidos entre apps del ecosistema, hilos persistidos en <code>store.closer.click</code> (mismos mensajes en web + extensión), mensajes offline (proxy retiene 24 h) y ranking integrado. PWA instalable + extensión Chrome MV3 reusando la PWA via iframe.',
-      en: 'One-to-one messaging with E2E encryption (ECDH+AES-GCM), contacts shared across ecosystem apps, threads persisted in <code>store.closer.click</code> (same messages on web + extension), offline messages (proxy holds them for 24 h) and built-in ratings. Installable PWA + Chrome MV3 extension reusing the PWA via iframe.',
+      es: 'Mensajería privada 1-a-1 con cifrado de extremo a extremo; recibe mensajes aunque estés desconectado. PWA instalable y extensión de Chrome.',
+      en: 'Private one-to-one messaging with end-to-end encryption; receive messages even while you are offline. Installable PWA and Chrome extension.',
     },
   },
   {
@@ -237,8 +237,8 @@ const apps: AppEntry[] = [
     repo: 'closerclick/trueque',
     cat: 'social',
     desc: {
-      es: 'Anuncios georreferenciados <strong>efímeros</strong> (vendo / regalo / busco) cerca de ti. Publicas un pin firmado con tu identidad del vault que vive máx 24 h (sin historial), descubres por radio con un <strong>radar de proximidad</strong> sin mapas de terceros, y cierras el trato por el messenger (contacto vía proxy). Estrena el pilar de descubrimiento geo <code>geo.closer.click</code>: tu ubicación no se guarda.',
-      en: 'Georeferenced <strong>ephemeral</strong> listings (sell / give away / looking for) near you. Publish a pin signed with your vault identity that lives up to 24 h (no history), discover by radius with a <strong>proximity radar</strong> with no third-party maps, and close the deal over the messenger (contact via proxy). Debuts the geo discovery pillar <code>geo.closer.click</code>: your location is never stored.',
+      es: 'Anuncios georreferenciados <strong>efímeros</strong> (vendo / regalo / busco) cerca de ti: descubre por radio con un <strong>radar de proximidad</strong> y cierra el trato por mensaje. Caducan en 24 h y tu ubicación no se guarda.',
+      en: 'Georeferenced <strong>ephemeral</strong> listings (sell / give away / looking for) near you: discover by radius with a <strong>proximity radar</strong> and close the deal by message. They expire in 24 h and your location is never stored.',
     },
   },
   {
@@ -248,8 +248,8 @@ const apps: AppEntry[] = [
     repo: 'closerclick/eco',
     cat: 'social',
     desc: {
-      es: 'Microblogging <strong>efímero y georreferenciado</strong>: publicas un eco (texto + enlaces + tags) con tu ubicación, quien lo tenga en su <strong>radio de escucha</strong> lo descubre por <code>geo.closer.click</code>, lo recibe y lo <strong>archiva localmente</strong>. A las <strong>24 h muere en la red</strong> y nunca se re-emite (solo sobrevive tu copia local); reps y replies <strong>rehidratan</strong> el original. El orden del feed (recencia · afinidad · reputación · tags · geo) se calcula <strong>100 % en tu cliente</strong>. Tu voz, en tu zona, bajo tus reglas.',
-      en: 'Ephemeral, <strong>georeferenced microblogging</strong>: post an eco (text + links + tags) with your location; whoever has it in their <strong>listening radius</strong> discovers it via <code>geo.closer.click</code>, receives it and <strong>archives it locally</strong>. After <strong>24 h it dies on the network</strong> and is never re-broadcast (only your local copy survives); reposts and replies <strong>rehydrate</strong> the original. Feed order (recency · affinity · reputation · tags · geo) is computed <strong>100% on your client</strong>. Your voice, in your radius, under your rules.',
+      es: 'Microblogging <strong>efímero y georreferenciado</strong>: publicas un eco (texto, enlaces y tags) y quien lo tenga en su <strong>radio de escucha</strong> lo descubre. A las <strong>24 h muere en la red</strong>. Tu voz, en tu zona, bajo tus reglas.',
+      en: 'Ephemeral, <strong>georeferenced microblogging</strong>: post an eco (text, links and tags) and whoever has it in their <strong>listening radius</strong> discovers it. After <strong>24 h it dies on the network</strong>. Your voice, in your radius, under your rules.',
     },
   },
   {
@@ -259,8 +259,8 @@ const apps: AppEntry[] = [
     repo: 'closerclick/qrshare',
     cat: 'apps',
     desc: {
-      es: 'Transferencia de archivos P2P por WebRTC. El proxy solo descubre los peers; los archivos viajan directamente entre dispositivos. Comparte por QR.',
-      en: 'P2P file transfer over WebRTC. The proxy only discovers peers; files travel directly between devices. Share by QR.',
+      es: 'Transferencia de archivos directa entre dispositivos, sin pasar por un servidor. Comparte por QR.',
+      en: 'Direct device-to-device file transfer, without going through a server. Share by QR.',
     },
   },
   {
@@ -271,8 +271,8 @@ const apps: AppEntry[] = [
     cat: 'juegos',
     sub: 'multi',
     desc: {
-      es: 'Ajedrez online multijugador con transporte P2P por WebRTC cuando es posible. Crea partidas públicas o privadas; el lobby se actualiza en tiempo real con los eventos del proxy.',
-      en: 'Online multiplayer chess with P2P transport over WebRTC when possible. Create public or private games; the lobby updates in real time from the proxy events.',
+      es: 'Ajedrez online multijugador. Crea partidas públicas o privadas y juega con un lobby en tiempo real.',
+      en: 'Online multiplayer chess. Create public or private games and play with a real-time lobby.',
     },
   },
   {
@@ -283,8 +283,8 @@ const apps: AppEntry[] = [
     cat: 'juegos',
     sub: 'multi',
     desc: {
-      es: 'El <strong>Cuarenta</strong>, el juego de naipes tradicional del Ecuador, en línea para <strong>2 ó 4 jugadores</strong>. Crea mesas públicas o privadas; lobby, asientos y turnos sobre el proxy, identidad por vault y transporte P2P. Caída, limpia, ronda y cartón, con reputación y perfil del ecosistema.',
-      en: 'The <strong>Cuarenta</strong> (40), Ecuador\'s traditional card game, online for <strong>2 or 4 players</strong>. Create public or private tables; lobby, seats and turns over the proxy, vault identity and P2P transport. Caída, sweep, ronda and card-count, with ecosystem reputation and profile.',
+      es: 'El <strong>Cuarenta</strong>, el juego de naipes tradicional del Ecuador, en línea para <strong>2 ó 4 jugadores</strong>.',
+      en: 'The <strong>Cuarenta</strong> (40), Ecuador\'s traditional card game, online for <strong>2 or 4 players</strong>.',
     },
   },
   {
@@ -353,8 +353,8 @@ const apps: AppEntry[] = [
     sub: 'multi',
     wip: true,
     desc: {
-      es: 'Sandbox multijugador cooperativo en un grid. Mundo subjetivo: cada peer hostea lo que crea y carga el entorno alrededor a medida que se mueve. Ground procedural determinista, props/items/personajes/enemigos programables vía DSL, resolución de conflictos por reputación (web-of-trust de identity) y recencia. Loot no-exclusivo, summon de enemigos por turnos ponderados por reputación.',
-      en: 'Cooperative multiplayer sandbox on a grid. Subjective world: each peer hosts what it creates and loads the surrounding environment as it moves. Deterministic procedural ground, props/items/characters/enemies programmable via DSL, conflict resolution by reputation (identity web-of-trust) and recency. Non-exclusive loot, enemy summoning in turns weighted by reputation.',
+      es: 'Sandbox multijugador cooperativo en un grid. Mundo subjetivo: cada jugador crea su entorno y se explora un mundo procedural infinito con props, ítems, personajes y enemigos programables.',
+      en: 'Cooperative multiplayer sandbox on a grid. Subjective world: each player creates their environment and explores an endless procedural world with programmable props, items, characters and enemies.',
     },
   },
   {
