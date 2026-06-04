@@ -17,6 +17,10 @@ import triviaLogo from './assets/apps/trivia.svg'
 import truequeLogo from './assets/apps/trueque.svg'
 import ecoLogo from './assets/apps/eco.svg'
 import { useBackLayer } from '@closerclick/closer-click-nav/vue'
+import { Identity } from '@closerclick/closer-click-identity'
+import { createVaultProfileProvider } from '@closerclick/closer-click-profile'
+import '@closerclick/closer-click-profile'
+import { createVaultReputation } from '@closerclick/closer-click-reputation'
 
 const isScrolled = ref(false)
 const menuOpen = ref(false)
@@ -36,7 +40,7 @@ const locale = ref<Locale>(detectLocale())
 const messages = {
   es: {
     htmlLang: 'es',
-    nav: { apps: 'Aplicaciones', service: 'Servicio', api: 'API', community: 'Suma un nodo', install: 'Instalar App' },
+    nav: { apps: 'Aplicaciones', service: 'Servicio', api: 'API', community: 'Suma un nodo', install: 'Instalar App', profile: 'Mi perfil' },
     tabs: { todas: 'Todas', social: 'Social', apps: 'Apps', deportes: 'Deportes', juegos: 'Juegos', android: 'Android', wip: 'En Desarrollo' },
     subtabs: { solo: 'Un jugador', multi: 'Multijugador', config: 'Configurables' },
     install: {
@@ -99,7 +103,7 @@ const messages = {
   },
   en: {
     htmlLang: 'en',
-    nav: { apps: 'Applications', service: 'Service', api: 'API', community: 'Run a node', install: 'Install App' },
+    nav: { apps: 'Applications', service: 'Service', api: 'API', community: 'Run a node', install: 'Install App', profile: 'My profile' },
     tabs: { todas: 'All', social: 'Social', apps: 'Apps', deportes: 'Sports', juegos: 'Games', android: 'Android', wip: 'In Development' },
     subtabs: { solo: 'Single player', multi: 'Multiplayer', config: 'Configurable' },
     install: {
@@ -504,6 +508,48 @@ useBackLayer(infoApp, { onClose: () => { infoApp.value = null } })
 useBackLayer(menuOpen)
 useBackLayer(aboutOpen, { url: ABOUT_PATH })
 
+// "Mi perfil" en el home: abre el Web Component compartido <closer-click-profile>
+// en modo edición con mi identidad del vault id.closer.click. Es el MISMO perfil
+// que en el resto del ecosistema (no se reimplementa nada).
+const profilePk = ref<string | null>(null)
+let _identity: any = null
+let _profileProvider: any = null
+const ensureIdentity = async () => {
+  if (_identity) return _identity
+  try { _identity = await Identity.connect() } catch (_) { _identity = null }
+  return _identity
+}
+const ensureProvider = async () => {
+  if (_profileProvider) return _profileProvider
+  const id = await ensureIdentity()
+  if (!id) return null
+  let reputation: any = null
+  try { reputation = createVaultReputation(id) } catch (_) { /* sin reputación: el perfil igual abre */ }
+  try { _profileProvider = createVaultProfileProvider({ identity: id, reputation }) } catch (_) { _profileProvider = null }
+  return _profileProvider
+}
+const myName = ref<string | null>(null)
+const openMyProfile = async () => {
+  const id = await ensureIdentity()
+  const pk = id?.me?.publickey
+  if (!pk) return
+  myName.value = id?.me?.nickname || null
+  profilePk.value = pk
+}
+const bindProfile = (el: any) => { if (!el) return; ensureProvider().then((p: any) => { if (p) el.provider = p }) }
+useBackLayer(profilePk, { onClose: () => { profilePk.value = null } })
+
+// Tema del Web Component de perfil acorde al home (tinta + lima, fuentes propias).
+const profileTheme = {
+  '--ccp-bg': '#0d1117', '--ccp-bg-2': '#12161d', '--ccp-bg-3': '#171c24', '--ccp-bg-4': '#1f2630',
+  '--ccp-border': 'rgba(255,255,255,0.16)', '--ccp-text': '#e9eef3', '--ccp-muted': '#94a1b0',
+  '--ccp-accent': '#c8f751', '--ccp-accent-2': '#b6e83c', '--ccp-gold': '#ffd166', '--ccp-derived': '#d49a00',
+  '--ccp-online': '#6ee7c8', '--ccp-affinity': '#7cc4ff', '--ccp-input-bg': '#0b0f15', '--ccp-radius': '16px',
+  '--ccp-font': "'Hanken Grotesk', system-ui, sans-serif",
+  '--ccp-font-headline': "'Bricolage Grotesque', system-ui, sans-serif",
+  '--ccp-font-mono': "'JetBrains Mono', ui-monospace, monospace",
+}
+
 // Navega entre la página de apps (root) y "¿Qué es CloserClick?". El cambio de
 // vista y la URL los gestiona la capa de back (aboutOpen + { url }); al volver a
 // home con una capa abierta, closer-click-nav restaura la URL solo. El
@@ -559,7 +605,7 @@ onUnmounted(() => {
                volver, así que el chevron solo aparece cuando hay algo atrás
                (vista /que-es o un modal/menú abierto). -->
           <closer-click-back
-            v-if="aboutOpen || infoApp || menuOpen"
+            v-if="aboutOpen || infoApp || menuOpen || profilePk"
             class="cc-back"
           ></closer-click-back>
           <img src="/images/logo.png" alt="Closer Click Logo" class="logo-img" />
@@ -603,6 +649,18 @@ onUnmounted(() => {
           <span></span>
           <span></span>
           <span></span>
+        </button>
+
+        <button
+          class="nav-profile"
+          @click="openMyProfile"
+          :aria-label="t.nav.profile"
+          :title="t.nav.profile"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" />
+          </svg>
         </button>
 
         <closer-click-support
@@ -819,6 +877,19 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
+
+    <!-- Mi perfil del ecosistema (Web Component compartido, vault id.closer.click). -->
+    <closer-click-profile
+      v-if="profilePk"
+      :ref="bindProfile"
+      modal
+      mode="view"
+      :pubkey="profilePk"
+      :name="myName"
+      :lang="locale"
+      :style="profileTheme"
+      @cc-profile-close="profilePk = null"
+    ></closer-click-profile>
   </div>
 </template>
 
@@ -923,6 +994,17 @@ onUnmounted(() => {
 }
 .install-btn:hover { background: var(--accent-press); transform: translateY(-1px); box-shadow: 0 6px 22px rgba(200, 247, 81, 0.22); }
 
+/* Botón "mi perfil": circular, ghost, a la izquierda de la moneda de soporte. */
+.nav-profile {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; padding: 0; flex-shrink: 0;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--line-2); border-radius: 50%; cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+}
+.nav-profile svg { width: 20px; height: 20px; display: block; }
+.nav-profile:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); transform: translateY(-1px); }
+
 .hamburger {
   display: none; flex-direction: column; justify-content: space-between;
   width: 26px; height: 18px; background: transparent; border: none; cursor: pointer; padding: 0;
@@ -948,9 +1030,10 @@ onUnmounted(() => {
   .mobile-menu { display: flex; }
   .logo-text { font-size: 1.15rem; }
   .logo { order: 1; }
-  .nav-support { order: 2; margin-left: auto; }
-  .hamburger { order: 3; margin-left: 0.8rem; }
-  .nav-actions { order: 4; flex-basis: 100%; justify-content: flex-start; margin-left: 0; }
+  .nav-profile { order: 2; margin-left: auto; }
+  .nav-support { order: 3; }
+  .hamburger { order: 4; margin-left: 0.8rem; }
+  .nav-actions { order: 5; flex-basis: 100%; justify-content: flex-start; margin-left: 0; }
 }
 
 /* ───────────────────────── Hero (vista /que-es) ───────────────────────── */
