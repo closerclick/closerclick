@@ -11,6 +11,7 @@ import padelLogo from './assets/apps/padel.svg'
 import gridgameLogo from './assets/apps/gridgame.svg'
 import gymbroLogo from './assets/apps/gymbro.svg'
 import diamondsLogo from './assets/apps/diamonds.svg'
+import crittersLogo from './assets/apps/critters.svg'
 import faviconLogo from './assets/apps/favicon.svg'
 import androidLauncherLogo from './assets/apps/android-launcher.svg'
 import triviaLogo from './assets/apps/trivia.svg'
@@ -334,6 +335,18 @@ const apps: AppEntry[] = [
     desc: {
       es: 'Juego casual de combinar diamantes (match-3): intercambia gemas adyacentes para alinear 3 o más del mismo color, encadena combos en cascada con multiplicador y supera tu récord. Avisos sonoros, vibración y funcionamiento sin conexión. PWA instalable; la partida y el récord viven solo en tu navegador.',
       en: 'Casual match-3 game: swap adjacent gems to line up 3 or more of the same color, chain cascading combos with a multiplier and beat your high score. Sound cues, vibration and offline support. Installable PWA; your game and high score live only in your browser.',
+    },
+  },
+  {
+    name: 'Critters',
+    url: 'https://critters.closer.click/',
+    logo: crittersLogo,
+    repo: 'closerclick/critters',
+    cat: 'juegos',
+    sub: 'solo',
+    desc: {
+      es: 'Monstruos coleccionables con arena de batalla automática: arma tu equipo de 5 en una rejilla 3×3 y deja que peleen solos. Gana la estrategia (tipos elementales, roles, pasivas/activas y la posición: una unidad protege a las de al lado, la columna central es la más crítica), no los reflejos. Roster procedural infinito (cada criatura es única por su semilla), invocación, captura y campaña por niveles. PWA instalable; tu colección vive en tu navegador.',
+      en: 'Collectible monsters with an automatic battle arena: build your team of 5 on a 3×3 grid and let them fight on their own. Strategy wins (elemental types, roles, passive/active skills and positioning: a unit shields its neighbors, the center column is the most critical), not reflexes. Infinite procedural roster (each critter is unique by its seed), summoning, capture and a level campaign. Installable PWA; your collection lives in your browser.',
     },
   },
   {
