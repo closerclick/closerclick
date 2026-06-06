@@ -345,8 +345,8 @@ const apps: AppEntry[] = [
     cat: 'juegos',
     sub: 'solo',
     desc: {
-      es: 'Monstruos coleccionables con arena de batalla automática: arma tu equipo de 5 en una rejilla 3×3 y deja que peleen solos. Gana la estrategia (tipos elementales, roles, pasivas/activas y la posición: una unidad protege a las de al lado, la columna central es la más crítica), no los reflejos. Roster procedural infinito (cada criatura es única por su semilla), invocación, captura y campaña por niveles. PWA instalable; tu colección vive en tu navegador.',
-      en: 'Collectible monsters with an automatic battle arena: build your team of 5 on a 3×3 grid and let them fight on their own. Strategy wins (elemental types, roles, passive/active skills and positioning: a unit shields its neighbors, the center column is the most critical), not reflexes. Infinite procedural roster (each critter is unique by its seed), summoning, capture and a level campaign. Installable PWA; your collection lives in your browser.',
+      es: 'Monstruos coleccionables con arena de batalla automática y determinista: arma tus alineaciones, define el rol (atacante/defensa/soporte) y la prioridad de objetivo de cada criatura y deja que peleen solas. Gana la estrategia, no los reflejos: 9 rarezas según el número de partes, elementos que se combinan y acumulan, y fusión para EVOLUCIONAR, REFORZAR o DEVOLUCIONAR (posición, empujes y tipos importan). Campaña infinita por estrellas, invocación y captura. PWA instalable; tu colección vive en tu navegador.',
+      en: 'Collectible monsters with a deterministic automatic battle arena: build your lineups, set each critter\'s role (attacker/defense/support) and target priority, and let them fight on their own. Strategy wins, not reflexes: 9 rarities by part count, elements that combine and stack, and fusion to EVOLVE, REINFORCE or DEVOLVE (positioning, knockbacks and types matter). Endless star-based campaign, summoning and capture. Installable PWA; your collection lives in your browser.',
     },
   },
   {
