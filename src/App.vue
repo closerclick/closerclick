@@ -884,10 +884,16 @@ onUnmounted(() => {
   color: var(--text);
   overflow-x: hidden;
 }
-/* Atmósfera fija: grilla blueprint + dos glows suaves (lima + frío). */
+/* Atmósfera de fondo: grilla blueprint + dos glows suaves (lima + frío).
+   Va en `position: absolute` (no `fixed`): una capa fija a pantalla completa
+   crea un layer de compositor anclado al viewport que algunas GPUs móviles
+   (Adreno/Mali en Android/MIUI) recomponen mal al hacer scroll → artefactos.
+   En `absolute` la capa cubre todo el alto de `.app` y hace scroll con el
+   contenido = sin layer fijo, sin corrupción. Misma razón por la que ya se
+   quitó el `mask-image` (ver nota abajo). */
 .app::before {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: -2;
   background:
@@ -899,10 +905,11 @@ onUnmounted(() => {
    El fundido se HORNEA como viñeta de tinta dentro del mismo background en vez
    de usar `mask-image`: enmascarar una capa `position: fixed` a pantalla
    completa corrompe el compositor en algunas GPUs móviles (bandas horizontales
-   rotas en Android/MIUI). Sin máscara = sin tile corrupto. */
+   rotas en Android/MIUI). Sin máscara = sin tile corrupto; y en `absolute`
+   (no `fixed`) tampoco hay layer fijo que recomponer. */
 .app::after {
   content: '';
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: -1;
   background-image:
@@ -917,15 +924,15 @@ onUnmounted(() => {
 /* ───────────────────────── Navbar ───────────────────────── */
 .navbar {
   position: fixed; top: 0; width: 100%;
-  background: rgba(9, 12, 17, 0.55);
-  backdrop-filter: blur(16px) saturate(120%);
-  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  /* Sin backdrop-filter: el blur sobre un elemento fijo es el disparador #1 de
+     artefactos en Adreno/Mali (MIUI). Tinta casi opaca en su lugar. */
+  background: rgba(9, 12, 17, 0.85);
   z-index: 1000;
   border-bottom: 1px solid transparent;
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 .navbar.scrolled {
-  background: rgba(9, 12, 17, 0.82);
+  background: rgba(9, 12, 17, 0.94);
   border-bottom-color: var(--line);
 }
 .nav-container { max-width: 1240px; margin: 0 auto; padding: 0.85rem 2rem; display: flex; align-items: center; gap: 1rem; }
@@ -1034,8 +1041,9 @@ onUnmounted(() => {
 .hero-glow {
   position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
   width: min(80rem, 120%); height: 60rem; pointer-events: none; z-index: 0;
-  background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.16), transparent 70%);
-  filter: blur(8px);
+  /* Sin filter: blur (crea layer de compositor → artefactos en MIUI). El
+     gradiente ya es suave; un stop más lejano mantiene el borde difuminado. */
+  background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.16), transparent 78%);
 }
 .hero-content { position: relative; z-index: 2; text-align: center; max-width: 880px; }
 .hero-content::before {
@@ -1165,7 +1173,7 @@ code, .section-text code, .info-modal-desc code, .service-item code, .api-item c
 .app-info-btn:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 
 /* ───────────────────────── Modal de info ───────────────────────── */
-.info-modal-overlay { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(5, 7, 10, 0.7); backdrop-filter: blur(6px); }
+.info-modal-overlay { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 1.5rem; background: rgba(5, 7, 10, 0.88); }
 .info-modal { position: relative; width: 100%; max-width: 440px; max-height: 85vh; overflow-y: auto; background: var(--ink-2); border: 1px solid var(--line-2); border-radius: 18px; padding: 2.2rem 1.8rem 1.8rem; text-align: center; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6); }
 .info-modal-x { position: absolute; top: 0.7rem; right: 0.7rem; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; color: var(--text-dim); border: none; border-radius: 50%; font-size: 1.5rem; line-height: 1; cursor: pointer; transition: all 0.2s ease; }
 .info-modal-x:hover { background: var(--surface-2); color: var(--text); }
@@ -1179,7 +1187,7 @@ code, .section-text code, .info-modal-desc code, .service-item code, .api-item c
 
 /* ───────────────────────── Servicio / API / Comunidad ───────────────────────── */
 .service-features, .api-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; margin-top: 3rem; text-align: left; }
-.service-item, .api-item { background: var(--surface); backdrop-filter: blur(4px); padding: 1.6rem; border-radius: 14px; border: 1px solid var(--line); transition: border-color 0.2s ease, transform 0.2s ease; }
+.service-item, .api-item { background: var(--surface-2); padding: 1.6rem; border-radius: 14px; border: 1px solid var(--line); transition: border-color 0.2s ease, transform 0.2s ease; }
 .service-item:hover, .api-item:hover { border-color: var(--line-2); transform: translateY(-3px); }
 .service-item h3, .api-item h3 { font-family: var(--font-display); font-weight: 700; color: var(--text); margin-bottom: 0.7rem; font-size: 1.18rem; }
 .service-item h3 { color: var(--mint); }
