@@ -12,6 +12,7 @@ import gridgameLogo from './assets/apps/gridgame.svg'
 import gymbroLogo from './assets/apps/gymbro.svg'
 import diamondsLogo from './assets/apps/diamonds.svg'
 import crittersLogo from './assets/apps/critters.svg'
+import hereLogo from './assets/apps/here.svg'
 import faviconLogo from './assets/apps/favicon.svg'
 import androidLauncherLogo from './assets/apps/android-launcher.svg'
 import triviaLogo from './assets/apps/trivia.svg'
@@ -201,6 +202,18 @@ watch(activeTab, (tab) => {
 
 type AppEntry = { name: string; repo: string; url: string; logo: string; cat: 'social' | 'apps' | 'deportes' | 'juegos' | 'android'; sub?: SubKey; desc: { es: string; en: string }; wip?: boolean; apk?: string }
 const apps: AppEntry[] = [
+  {
+    name: 'here',
+    url: 'https://here.closer.click/',
+    logo: hereLogo,
+    repo: 'closerclick/here',
+    cat: 'social',
+    wip: true,
+    desc: {
+      es: 'Comparte tu ubicación en vivo con tus círculos de familia y amigos, privada y efímera. Configura OwnTracks (que hace el seguimiento en segundo plano) contra el pilar geo: cada círculo va cifrado de punta a punta, autorizado por capacidades firmadas desde tu identidad (revocables, con vencimiento) y sin historial. El servidor solo ve datos cifrados; nada de broadcast ni descubrimiento por cercanía.',
+      en: 'Share your live location with your family and friends circles, private and ephemeral. Configure OwnTracks (which does the background tracking) against the geo pillar: each circle is end-to-end encrypted, authorized by signed capabilities from your identity (revocable, expiring) and with no history. The server only sees encrypted data; no broadcast, no proximity discovery.',
+    },
+  },
   {
     name: 'Pronóstico Mundialista',
     url: 'https://mundial.closer.click/',
