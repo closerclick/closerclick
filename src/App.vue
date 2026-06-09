@@ -18,6 +18,7 @@ import androidLauncherLogo from './assets/apps/android-launcher.svg'
 import triviaLogo from './assets/apps/trivia.svg'
 import truequeLogo from './assets/apps/trueque.svg'
 import ecoLogo from './assets/apps/eco.svg'
+import sudokuLogo from './assets/apps/sudoku.svg'
 import { useBackLayer } from '@closerclick/closer-click-nav/vue'
 import { Identity } from '@closerclick/closer-click-identity'
 import { createVaultProfileProvider } from '@closerclick/closer-click-profile'
@@ -347,6 +348,18 @@ const apps: AppEntry[] = [
     desc: {
       es: 'Juego casual de combinar diamantes (match-3): intercambia gemas adyacentes para alinear 3 o más del mismo color, encadena combos en cascada con multiplicador y supera tu récord. Avisos sonoros, vibración y funcionamiento sin conexión. PWA instalable; la partida y el récord viven solo en tu navegador.',
       en: 'Casual match-3 game: swap adjacent gems to line up 3 or more of the same color, chain cascading combos with a multiplier and beat your high score. Sound cues, vibration and offline support. Installable PWA; your game and high score live only in your browser.',
+    },
+  },
+  {
+    name: 'Sudoku',
+    url: 'https://sudoku.closer.click/',
+    logo: sudokuLogo,
+    repo: 'closerclick/sudoku',
+    cat: 'juegos',
+    sub: 'solo',
+    desc: {
+      es: 'Sudoku con <strong>aventura de niveles</strong>: un mapa con <strong>caminos que se bifurcan</strong> y <strong>jefes</strong> que desbloqueas con <strong>estrellas</strong> (1–3 por nivel según tu rendimiento). Generador propio determinista con <strong>solución única</strong>, cuatro dificultades y <strong>reto diario</strong>. <strong>Comparte un nivel y ganas pistas</strong> consumibles para resolver. Notas a lápiz, detección de errores, deshacer y cronómetro. PWA instalable; tus partidas, tiempos y estrellas viven en tu navegador.',
+      en: 'Sudoku with a <strong>level adventure</strong>: a map with <strong>branching paths</strong> and <strong>bosses</strong> you unlock with <strong>stars</strong> (1–3 per level based on your performance). Deterministic generator with a guaranteed <strong>unique solution</strong>, four difficulties and a <strong>daily challenge</strong>. <strong>Share a level to earn</strong> consumable hints to solve. Pencil notes, error detection, undo and a timer. Installable PWA; your games, times and stars live in your browser.',
     },
   },
   {
