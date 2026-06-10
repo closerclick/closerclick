@@ -88,6 +88,33 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 }
 .fade-in-up { animation: fadeInUp 0.6s ease-out; }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   Primitivas de layout compartidas entre secciones (antes scoped en App.vue;
+   ahora globales porque las usan varios componentes: AppsCatalog y
+   AboutSections). Las clases `.aplicaciones-section`/`.apps-only` específicas
+   del catálogo siguen scoped en su componente.
+   ───────────────────────────────────────────────────────────────────────── */
+.section { position: relative; padding: 5.5rem 2rem; display: flex; justify-content: center; }
+.section-content { position: relative; z-index: 2; width: 100%; max-width: 1180px; text-align: center; }
+.section-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.03em; color: var(--text); margin-bottom: 1rem; }
+.section-text { font-size: 1.1rem; line-height: 1.7; color: var(--text-dim); max-width: 680px; margin: 0 auto 2.5rem; }
+
+/* Código en línea (chips lima). Global para que también aplique al contenido
+   inyectado con v-html en las descripciones de apps y en Servicio/API, que las
+   reglas scoped no alcanzan. */
+code, .section-text code, .info-modal-desc code, .service-item code, .api-item code, .community-service code {
+  font-family: var(--font-mono); font-size: 0.85em;
+  background: rgba(var(--accent-rgb), 0.08); color: var(--accent);
+  padding: 0.12em 0.42em; border-radius: 5px; border: 1px solid rgba(var(--accent-rgb), 0.14);
+}
+
+@media (max-width: 768px) {
+  .section { padding: 4rem 1.2rem; }
+}
+@media (max-width: 480px) {
+  .section-content { padding: 0; }
+}
+
 @media print {
   .navbar, .cta-button { display: none; }
   .section { break-inside: avoid; }
